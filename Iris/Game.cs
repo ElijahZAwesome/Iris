@@ -1,6 +1,7 @@
 using System;
-using System.Threading;
 using System.Threading.Tasks;
+using Iris.Diagnostics;
+using Iris.Graphics;
 using SdlSharp;
 using SdlSharp.Graphics;
 using SdlSharp.Sound;
@@ -9,75 +10,94 @@ namespace Iris
 {
     public class Game : IDisposable
     {
+        private bool _alreadyStarted;
+        private double _lastUpdateTime;
+
         private Renderer Renderer { get; }
+        private RenderContext RenderContext { get; }
+        private GraphicsSettings GraphicsSettings { get; }
 
         protected Application Application { get; }
         protected Window Window { get; }
 
-        public bool Disposing { get; private set; }
+        public FpsCounter FpsCounter { get; }
+
+        public bool Initialized { get; private set; }
         public bool Disposed { get; private set; }
 
-        protected Game() : this(new (Hint, string)[] { })
-        {
-        }
-
-        protected Game(params (Hint hint, string value)[] hints)
+        protected Game()
             : this(
                 Subsystems.Everything,
+                WindowFlags.Desktop,
                 ImageFormats.Jpg | ImageFormats.Png,
-                MixerFormats.Mod | MixerFormats.Mp3 | MixerFormats.Ogg,
-                hints
+                MixerFormats.Mod | MixerFormats.Mp3 | MixerFormats.Ogg
             )
         {
         }
 
         protected Game(
             Subsystems subsystems,
+            WindowFlags windowFlags,
             ImageFormats imageFormats,
-            MixerFormats mixerFormats,
-            (Hint hint, string value)[] hints)
+            MixerFormats mixerFormats)
         {
+            GraphicsSettings = new GraphicsSettings(this);
+            Initialize(GraphicsSettings);
+
             Application = new Application(
                 subsystems,
                 imageFormats,
-                mixerFormats,
-                true,
-                hints
+                mixerFormats
             );
-
             Application.Quitting += Application_Quitting;
 
             Window = Window.Create(
-                new Size(320, 240),
-                WindowFlags.Vulkan | WindowFlags.Resizable,
+                new Size(
+                    GraphicsSettings.WindowWidth,
+                    GraphicsSettings.WindowHeight
+                ),
+                windowFlags,
                 out Renderer renderer
             );
-
+            
             Renderer = renderer;
+            RenderContext = new RenderContext(renderer);
+            FpsCounter = new FpsCounter();
+
+            Initialized = true;
         }
 
         public void Run()
         {
-            while (!Disposing)
+            if (_alreadyStarted)
             {
-                Application.DispatchEvent();
+                throw new InvalidOperationException("Run() was already called before.");
+            }
+            _alreadyStarted = true;
 
-                try
+            try
+            {
+                while (!Disposed)
                 {
-                    Update();
-                    Draw();
-                    
-                    Renderer.Flush();
+                    Application.DispatchEvent();
+
+                    var currentCounter = Timer.PerformanceCounter;
+                    var delta = (currentCounter - _lastUpdateTime) * 1000.0 / Timer.PerformanceFrequency;
+
+                    Update(delta);
+
+                    RenderContext.Clear(GraphicsSettings.ClearColor);
+                    Draw(RenderContext);
                     Renderer.Present();
-                    Window.UpdateSurface();
-                }
-                catch (SdlException)
-                {
-                    if (!Disposing)
-                        throw;
-                }
+                    
+                    FpsCounter.Update();
 
-                Thread.Sleep(16);
+                    _lastUpdateTime = currentCounter;
+                }
+            }
+            catch (SdlException)
+            {
+                // TODO: Log in the future. Now ignore.
             }
         }
 
@@ -86,38 +106,28 @@ namespace Iris
 
         public void Dispose()
         {
-            Disposing = true;
+            Window.Dispose();
+            Application.Dispose();
 
-            Renderer?.Dispose();
-            Window?.Dispose();
-            Application?.Dispose();
-
-            Disposing = false;
             Disposed = true;
         }
-        
-        protected virtual void Update()
+
+        internal void SetWindowSize(int width, int height)
         {
+            Window.Size = new Size(width, height);
         }
 
-        protected virtual void Draw()
+        protected virtual void Initialize(GraphicsSettings settings)
         {
-        }
-
-        protected void Clear(Color color)
-        {
-            Renderer.DrawColor = color;
-            Renderer.Clear();
-        }
-
-        protected void FillRectangle(float x, float y, float width, float height, Color color)
-        {
-            var prevColor = Renderer.DrawColor;
             
-            Renderer.DrawColor = color;
-            Renderer.FillRectangle(new RectangleF(new PointF(x, y), new SizeF(width, height)));
+        }
 
-            Renderer.DrawColor = prevColor;
+        protected virtual void Update(double deltaTime)
+        {
+        }
+
+        protected virtual void Draw(RenderContext context)
+        {
         }
 
         private void Application_Quitting(object sender, SdlEventArgs e)
