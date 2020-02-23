@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Iris
 {
-    public static class ModuleInitializer
+    internal static class ModuleInitializer
     {
         public static void Initialize()
         {
