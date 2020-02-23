@@ -42,8 +42,8 @@ namespace Iris.TestApp
             else if (Y + 32 >= Window.Renderer.Viewport.Value.Size.Height)
                 VertDirection = -1;
 
-            X += 0 * HorizDirection;
-            Y += 0 * VertDirection;
+            X += 1 * HorizDirection;
+            Y += 1 * VertDirection;
 
         }
     }
