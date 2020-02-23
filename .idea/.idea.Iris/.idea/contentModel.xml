@@ -6,7 +6,186 @@
     <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p="Dependencies" t="Include">
         <e p="SdlSharp/src/SdlSharp" t="IncludeRecursive">
+          <e p="Application.cs" t="Include" />
+          <e p="Clipboard.cs" t="Include" />
+          <e p="CpuInfo.cs" t="Include" />
+          <e p="DisposableAnsiString.cs" t="Include" />
+          <e p="DropEventArgs.cs" t="Include" />
+          <e p="DroppedEventArgs.cs" t="Include" />
+          <e p="Graphics" t="Include">
+            <e p="BinarizeAlphaWindowShapeMode.cs" t="Include" />
+            <e p="BlendFactor.cs" t="Include" />
+            <e p="BlendMode.cs" t="Include" />
+            <e p="BlendOperation.cs" t="Include" />
+            <e p="Color.cs" t="Include" />
+            <e p="ColorKeyWindowShapeMode.cs" t="Include" />
+            <e p="DefaultWindowShapeMode.cs" t="Include" />
+            <e p="Display.cs" t="Include" />
+            <e p="DisplayMode.cs" t="Include" />
+            <e p="DisplayOrientation.cs" t="Include" />
+            <e p="EnumeratedPixelFormat.cs" t="Include" />
+            <e p="Font.cs" t="Include" />
+            <e p="FontHinting.cs" t="Include" />
+            <e p="FontStyle.cs" t="Include" />
+            <e p="HitTestResult.cs" t="Include" />
+            <e p="Image.cs" t="Include" />
+            <e p="ImageFormats.cs" t="Include" />
+            <e p="LocationEventArgs.cs" t="Include" />
+            <e p="OrientationChangedEventArgs.cs" t="Include" />
+            <e p="Palette.cs" t="Include" />
+            <e p="PixelColor.cs" t="Include" />
+            <e p="PixelFormat.cs" t="Include" />
+            <e p="Renderer.cs" t="Include" />
+            <e p="RendererFlags.cs" t="Include" />
+            <e p="RendererFlip.cs" t="Include" />
+            <e p="RendererInfo.cs" t="Include" />
+            <e p="SizeEventArgs.cs" t="Include" />
+            <e p="Surface.cs" t="Include" />
+            <e p="SystemWindowMessage.cs" t="Include" />
+            <e p="SystemWindowMessageEventArgs.cs" t="Include" />
+            <e p="Texture.cs" t="Include" />
+            <e p="TextureAccess.cs" t="Include" />
+            <e p="Video.cs" t="Include" />
+            <e p="Window.cs" t="Include" />
+            <e p="WindowFlags.cs" t="Include" />
+            <e p="WindowShapeMode.cs" t="Include" />
+            <e p="YuvConversionMode.cs" t="Include" />
+          </e>
+          <e p="Hint.cs" t="Include" />
+          <e p="HintCallback.cs" t="Include" />
+          <e p="HintPriority.cs" t="Include" />
+          <e p="Input" t="Include">
+            <e p="Cursor.cs" t="Include" />
+            <e p="GameController.cs" t="Include" />
+            <e p="GameControllerAddedEventArgs.cs" t="Include" />
+            <e p="GameControllerAxis.cs" t="Include" />
+            <e p="GameControllerAxisBinding.cs" t="Include" />
+            <e p="GameControllerAxisMotionEventArgs.cs" t="Include" />
+            <e p="GameControllerBinding.cs" t="Include" />
+            <e p="GameControllerButton.cs" t="Include" />
+            <e p="GameControllerButtonBinding.cs" t="Include" />
+            <e p="GameControllerButtonEventArgs.cs" t="Include" />
+            <e p="GameControllerHatBinding.cs" t="Include" />
+            <e p="HatFlags.cs" t="Include" />
+            <e p="Joystick.cs" t="Include" />
+            <e p="JoystickAddedEventArgs.cs" t="Include" />
+            <e p="JoystickAxisMotionEventArgs.cs" t="Include" />
+            <e p="JoystickBallMotionEventArgs.cs" t="Include" />
+            <e p="JoystickButtonEventArgs.cs" t="Include" />
+            <e p="JoystickHatMotionEventArgs.cs" t="Include" />
+            <e p="JoystickInfo.cs" t="Include" />
+            <e p="JoystickPowerLevel.cs" t="Include" />
+            <e p="JoystickType.cs" t="Include" />
+            <e p="KeyCode.cs" t="Include" />
+            <e p="KeyModifier.cs" t="Include" />
+            <e p="Keyboard.cs" t="Include" />
+            <e p="KeyboardEventArgs.cs" t="Include" />
+            <e p="KeyboardExtensions.cs" t="Include" />
+            <e p="Mouse.cs" t="Include" />
+            <e p="MouseButton.cs" t="Include" />
+            <e p="MouseButtonEventArgs.cs" t="Include" />
+            <e p="MouseMotionEventArgs.cs" t="Include" />
+            <e p="MouseWheelDirection.cs" t="Include" />
+            <e p="MouseWheelEventArgs.cs" t="Include" />
+            <e p="Scancode.cs" t="Include" />
+            <e p="Sensor.cs" t="Include" />
+            <e p="SensorDevice.cs" t="Include" />
+            <e p="SensorType.cs" t="Include" />
+            <e p="SensorUpdatedEventArgs.cs" t="Include" />
+            <e p="SystemCursor.cs" t="Include" />
+            <e p="TextEditedEventArgs.cs" t="Include" />
+            <e p="TextInputEventArgs.cs" t="Include" />
+          </e>
+          <e p="ItemCollection.cs" t="Include" />
+          <e p="Log.cs" t="Include" />
+          <e p="LogCategory.cs" t="Include" />
+          <e p="LogOutputFunction.cs" t="Include" />
+          <e p="LogPriority.cs" t="Include" />
+          <e p="MessageBoxButton.cs" t="Include" />
+          <e p="MessageBoxButtonFlags.cs" t="Include" />
+          <e p="MessageBoxColor.cs" t="Include" />
+          <e p="MessageBoxColorScheme.cs" t="Include" />
+          <e p="MessageBoxFlags.cs" t="Include" />
+          <e p="Native.cs" t="Include" />
+          <e p="NativeIndexBase.cs" t="Include" />
+          <e p="NativeMemoryBlock.cs" t="Include" />
+          <e p="NativePointerBase.cs" t="Include" />
+          <e p="NativeStaticIndexBase.cs" t="Include" />
+          <e p="Point.cs" t="Include" />
+          <e p="PointF.cs" t="Include" />
+          <e p="PowerState.cs" t="Include" />
+          <e p="RWOps.cs" t="Include" />
+          <e p="Rectangle.cs" t="Include" />
+          <e p="RectangleF.cs" t="Include" />
+          <e p="SdlEventArgs.cs" t="Include" />
+          <e p="SdlException.cs" t="Include" />
           <e p="SdlSharp.csproj" t="IncludeRecursive" />
+          <e p="SeekType.cs" t="Include" />
+          <e p="Size.cs" t="Include" />
+          <e p="SizeF.cs" t="Include" />
+          <e p="Sound" t="Include">
+            <e p="Audio.cs" t="Include" />
+            <e p="AudioAllowChange.cs" t="Include" />
+            <e p="AudioCallback.cs" t="Include" />
+            <e p="AudioDevice.cs" t="Include" />
+            <e p="AudioDeviceAddedEventArgs.cs" t="Include" />
+            <e p="AudioFormat.cs" t="Include" />
+            <e p="AudioSpec.cs" t="Include" />
+            <e p="AudioStatus.cs" t="Include" />
+            <e p="AudioStream.cs" t="Include" />
+            <e p="Fading.cs" t="Include" />
+            <e p="MixChannel.cs" t="Include" />
+            <e p="MixChannelGroup.cs" t="Include" />
+            <e p="MixChunk.cs" t="Include" />
+            <e p="MixEffect.cs" t="Include" />
+            <e p="MixFunctionDelegate.cs" t="Include" />
+            <e p="MixMusic.cs" t="Include" />
+            <e p="Mixer.cs" t="Include" />
+            <e p="MixerFormats.cs" t="Include" />
+            <e p="MusicChannelFinishedDelegate.cs" t="Include" />
+            <e p="MusicFinishedDelegate.cs" t="Include" />
+            <e p="MusicType.cs" t="Include" />
+            <e p="WavData.cs" t="Include" />
+          </e>
+          <e p="State.cs" t="Include" />
+          <e p="Subsystems.cs" t="Include" />
+          <e p="Timer.cs" t="Include" />
+          <e p="TimerCallbackDelegate.cs" t="Include" />
+          <e p="Touch" t="Include">
+            <e p="CartesianHapticDirection.cs" t="Include" />
+            <e p="ConditionHapticEffect.cs" t="Include" />
+            <e p="ConstantHapticEffect.cs" t="Include" />
+            <e p="CustomHapticEffect.cs" t="Include" />
+            <e p="DollarGestureEventArgs.cs" t="Include" />
+            <e p="Finger.cs" t="Include" />
+            <e p="Gesture.cs" t="Include" />
+            <e p="Haptic.cs" t="Include" />
+            <e p="HapticCapabilities.cs" t="Include" />
+            <e p="HapticDirection.cs" t="Include" />
+            <e p="HapticEffect.cs" t="Include" />
+            <e p="HapticEffectInstance.cs" t="Include" />
+            <e p="HapticEffectType.cs" t="Include" />
+            <e p="HapticInfo.cs" t="Include" />
+            <e p="LeftRightHapticEffect.cs" t="Include" />
+            <e p="MultiGestureEventArgs.cs" t="Include" />
+            <e p="PeriodicHapticEffect.cs" t="Include" />
+            <e p="PolarHapticDirection.cs" t="Include" />
+            <e p="RampHapticEffect.cs" t="Include" />
+            <e p="SphericalHapticDirection.cs" t="Include" />
+            <e p="TouchDevice.cs" t="Include" />
+            <e p="TouchDeviceType.cs" t="Include" />
+            <e p="TouchFingerEventArgs.cs" t="Include" />
+          </e>
+          <e p="Utf8String.cs" t="Include" />
+          <e p="Version.cs" t="Include" />
+          <e p="bin" t="ExcludeRecursive" />
+          <e p="obj" t="ExcludeRecursive">
+            <e p="Debug" t="Include">
+              <e p="netstandard2.1" t="Include">
+                <e p="SdlSharp.AssemblyInfo.cs" t="Include" />
+              </e>
+            </e>
+          </e>
         </e>
       </e>
       <e p="Iris" t="IncludeRecursive">
