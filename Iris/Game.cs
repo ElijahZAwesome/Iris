@@ -1,10 +1,9 @@
-using System;
-using System.Threading.Tasks;
 using Iris.Diagnostics;
 using Iris.Graphics;
 using SdlSharp;
 using SdlSharp.Graphics;
 using SdlSharp.Sound;
+using System;
 
 namespace Iris
 {
@@ -22,7 +21,7 @@ namespace Iris
 
         public FpsCounter FpsCounter { get; }
 
-        public bool Initialized { get; private set; }
+        public bool Constructed { get; private set; }
         public bool Disposed { get; private set; }
 
         protected Game()
@@ -59,12 +58,14 @@ namespace Iris
                 windowFlags,
                 out Renderer renderer
             );
-            
+
             Renderer = renderer;
             RenderContext = new RenderContext(renderer);
             FpsCounter = new FpsCounter();
 
-            Initialized = true;
+            Constructed = true;
+
+            LoadContent();
         }
 
         public void Run()
@@ -84,12 +85,15 @@ namespace Iris
                     var currentCounter = Timer.PerformanceCounter;
                     var delta = (currentCounter - _lastUpdateTime) * 1000.0 / Timer.PerformanceFrequency;
 
+                    if (Disposed)
+                        break;
+
                     Update(delta);
 
                     RenderContext.Clear(GraphicsSettings.ClearColor);
                     Draw(RenderContext);
                     Renderer.Present();
-                    
+
                     FpsCounter.Update();
 
                     _lastUpdateTime = currentCounter;
@@ -101,15 +105,21 @@ namespace Iris
             }
         }
 
-        public async Task RunAsync()
-            => await Task.Run(Run);
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                Disposed = true;
+
+                Window.Dispose();
+                Application.Dispose();
+            }
+        }
 
         public void Dispose()
         {
-            Window.Dispose();
-            Application.Dispose();
-
-            Disposed = true;
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         internal void SetWindowSize(int width, int height)
@@ -117,9 +127,13 @@ namespace Iris
             Window.Size = new Size(width, height);
         }
 
+
         protected virtual void Initialize(GraphicsSettings settings)
         {
-            
+        }
+
+        protected virtual void LoadContent()
+        {
         }
 
         protected virtual void Update(double deltaTime)

@@ -34,7 +34,7 @@ namespace Iris.Diagnostics
                 AverageFps += _frameTimes[i];
 
             AverageFps /= count;
-            AverageFps = 1000.0f / AverageFps;
+            AverageFps = 1000f / AverageFps;
         }
     }
 }

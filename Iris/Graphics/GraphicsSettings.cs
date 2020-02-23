@@ -19,7 +19,7 @@ namespace Iris.Graphics
             {
                 _windowWidth = value;
 
-                if (_game.Initialized)
+                if (_game.Constructed)
                     _game.SetWindowSize(_windowWidth, _windowHeight);
             }
         }
@@ -31,7 +31,7 @@ namespace Iris.Graphics
             {
                 _windowHeight = value;
 
-                if (_game.Initialized)
+                if (_game.Constructed)
                     _game.SetWindowSize(_windowWidth, _windowHeight);
             }
         }

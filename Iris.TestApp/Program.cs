@@ -1,13 +1,11 @@
-﻿using System.Threading.Tasks;
-
-namespace Iris.TestApp
+﻿namespace Iris.TestApp
 {
     internal static class Program
     {
-        internal static async Task Main(string[] args)
+        internal static void Main(string[] args)
         {
             using var game = new MyGame();
-            await game.RunAsync();
+            game.Run();
         }
     }
 }
