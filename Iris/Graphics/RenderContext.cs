@@ -42,7 +42,7 @@ namespace Iris.Graphics
 
         public void Draw(Sprite sprite)
         {
-            Window.Draw(sprite);
+            Window.Draw(sprite.SfmlSprite);
         }
     }
 }

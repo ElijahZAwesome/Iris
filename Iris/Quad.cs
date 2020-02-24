@@ -6,7 +6,6 @@ namespace Iris
     {
         public int Left;
         public int Top;
-
         public int Width;
         public int Height;
 

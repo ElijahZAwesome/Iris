@@ -17,13 +17,13 @@ namespace Iris.TestApp
             settings.WindowWidth = 1024;
             settings.WindowHeight = 600;
             settings.ClearColor = Colors.CornflowerBlue;
-            settings.FramerateLimit = 240;
+            settings.FramerateLimit = 0;
+            settings.EnableVerticalSync = true;
         }
 
         protected override void LoadContent()
         {
             _sprite = Content.Load<Sprite>("wot2.png");
-            _sprite.Scale = new Vector2(0.5f, 0.5f);
         }
 
         protected override void Draw(RenderContext context)
@@ -45,8 +45,8 @@ namespace Iris.TestApp
             else if (Y + _sprite.ActualHeight >= Window.Size.Y)
                 _vertDirection = -1;
 
-            X += 80 * _horizDirection * deltaTime;
-            Y += 80 * _vertDirection * deltaTime;
+            X += 140 * _horizDirection * deltaTime;
+            Y += 140 * _vertDirection * deltaTime;
             
             _sprite.Position = new Vector2(X, Y);
         }

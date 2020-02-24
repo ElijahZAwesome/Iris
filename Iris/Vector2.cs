@@ -19,7 +19,7 @@ namespace Iris
         
         public float Magnitude()
             => (float)Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2));
-        
+
         internal Vector2f ToSfmlVector()
             => new Vector2f(X, Y);
     }
