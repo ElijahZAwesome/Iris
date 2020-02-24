@@ -1,3 +1,4 @@
+using Iris.Content;
 using Iris.Diagnostics;
 using Iris.Graphics;
 using SdlSharp;
@@ -18,6 +19,8 @@ namespace Iris
 
         protected Application Application { get; }
         protected Window Window { get; }
+
+        protected ContentManager Content { get; }
 
         public FpsCounter FpsCounter { get; }
 
@@ -63,6 +66,7 @@ namespace Iris
             RenderContext = new RenderContext(renderer);
             FpsCounter = new FpsCounter();
 
+            Content = new ContentManager();
             Constructed = true;
 
             LoadContent();

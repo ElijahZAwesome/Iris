@@ -8,4 +8,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Iris\Iris.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Content\wot2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
