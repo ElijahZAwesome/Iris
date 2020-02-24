@@ -1,58 +1,54 @@
 using Iris.Graphics;
-using SdlSharp.Graphics;
 
 namespace Iris.TestApp
 {
     public class MyGame : Game
     {
-        private int HorizDirection = 1;
-        private int VertDirection = 1;
+        private int _horizDirection = 1;
+        private int _vertDirection = 1;
 
-        private int X { get; set; } = 100;
-        private int Y { get; set; } = 100;
+        private float X { get; set; } = 100;
+        private float Y { get; set; } = 100;
 
-        private int Velocity { get; set; } = 4;
-
-        private Sprite Sprite { get; set; }
+        private Sprite _sprite;
 
         protected override void Initialize(GraphicsSettings settings)
         {
             settings.WindowWidth = 1024;
             settings.WindowHeight = 600;
             settings.ClearColor = Colors.CornflowerBlue;
-            settings.EnableVerticalSync = true;
+            settings.FramerateLimit = 240;
         }
 
         protected override void LoadContent()
         {
-            Sprite = Content.Load<Sprite>("wot2.png");
-            Sprite.Scale = 0.4f;
+            _sprite = Content.Load<Sprite>("wot2.png");
+            _sprite.Scale = new Vector2(0.5f, 0.5f);
         }
 
         protected override void Draw(RenderContext context)
         {
-            context.Draw(Sprite);
+            context.Draw(_sprite);
         }
 
-        protected override void Update(double deltaTime)
+        protected override void Update(float deltaTime)
         {
-            Window.Title = $"FPS: {FpsCounter.AverageFps:F2}";
+            Window.SetTitle($"FPS: {FpsCounter.FramesPerSecond:F2} | Delta {deltaTime:F6}");
 
             if (X - 1 <= 0)
-                HorizDirection = 1;
-            else if (X + Sprite.ActualWidth >= Window.Renderer.Viewport.Value.Size.Width)
-                HorizDirection = -1;
+                _horizDirection = 1;
+            else if (X + _sprite.ActualWidth >= Window.Size.X)
+                _horizDirection = -1;
 
             if (Y - 1 <= 0)
-                VertDirection = 1;
-            else if (Y + Sprite.ActualHeight >= Window.Renderer.Viewport.Value.Size.Height)
-                VertDirection = -1;
+                _vertDirection = 1;
+            else if (Y + _sprite.ActualHeight >= Window.Size.Y)
+                _vertDirection = -1;
 
-            X += Velocity * HorizDirection;
-            Y += Velocity * VertDirection;
-
-            Sprite.X = X;
-            Sprite.Y = Y;
+            X += 80 * _horizDirection * deltaTime;
+            Y += 80 * _vertDirection * deltaTime;
+            
+            _sprite.Position = new Vector2(X, Y);
         }
     }
 }

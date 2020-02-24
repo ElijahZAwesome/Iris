@@ -1,40 +1,25 @@
-using SdlSharp;
+using SFML.System;
 
 namespace Iris.Diagnostics
 {
     public class FpsCounter
     {
-        private const int MaxSnapshots = 60;
+        private Clock Clock { get; }
         
-        private readonly uint[] _frameTimes;
-        private uint _lastFrameTime;
-
-        public uint TotalFrameCount { get; private set; }
-        public float AverageFps { get; private set; }
+        public ulong TotalFrameCount { get; private set; }
+        public float FramesPerSecond { get; private set; }
 
         internal FpsCounter()
         {
-            _frameTimes = new uint[MaxSnapshots];
+            Clock = new Clock();
         }
 
         internal void Update()
         {
-            var index = TotalFrameCount % MaxSnapshots;
-            var ticks = Timer.Ticks;
-
-            _frameTimes[index] = ticks - _lastFrameTime;
-            _lastFrameTime = ticks;
+            FramesPerSecond = 1f / Clock.ElapsedTime.AsSeconds();
+            Clock.Restart();
 
             TotalFrameCount++;
-
-            var count = TotalFrameCount < MaxSnapshots ? (int)TotalFrameCount 
-                                                       : MaxSnapshots;
-
-            for (var i = 0; i < count; i++)
-                AverageFps += _frameTimes[i];
-
-            AverageFps /= count;
-            AverageFps = 1000f / AverageFps;
         }
     }
 }

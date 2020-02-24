@@ -1,5 +1,4 @@
-using SdlSharp;
-using SdlSharp.Graphics;
+using SFML.Graphics;
 
 namespace Iris.Graphics
 {
@@ -7,32 +6,33 @@ namespace Iris.Graphics
     {
         private readonly Game _game;
 
-        private int _windowWidth = 640;
-        private int _windowHeight = 480;
+        private uint _windowWidth = 640;
+        private uint _windowHeight = 480;
+        private uint _framerateLimit = 60;
 
         private bool _enableVerticalSync;
 
-        public int WindowWidth
+        public uint WindowWidth
         {
             get => _windowWidth;
             set
             {
                 _windowWidth = value;
 
-                if (_game.Constructed)
-                    _game.SetWindowSize(_windowWidth, _windowHeight);
+                if (_game.Window != null)
+                    _game.Resize(_windowWidth, _windowHeight);
             }
         }
 
-        public int WindowHeight
+        public uint WindowHeight
         {
             get => _windowHeight;
             set
             {
                 _windowHeight = value;
 
-                if (_game.Constructed)
-                    _game.SetWindowSize(_windowWidth, _windowHeight);
+                if (_game.Window != null)
+                    _game.Resize(_windowWidth, _windowHeight);
             }
         }
 
@@ -42,7 +42,17 @@ namespace Iris.Graphics
             set
             {
                 _enableVerticalSync = value;
-                Hint.RenderVsync.Set(_enableVerticalSync ? "1" : "0", HintPriority.Override);
+                _game.Window?.SetVerticalSyncEnabled(_enableVerticalSync);
+            }
+        }
+
+        public uint FramerateLimit
+        {
+            get => _framerateLimit;
+            set
+            {
+                _framerateLimit = value;
+                _game.Window?.SetFramerateLimit(_framerateLimit);
             }
         }
 

@@ -11,7 +11,7 @@ namespace Iris
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
                 var localPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var dllPath = Path.Combine(localPath, "SdlBinaries");
+                var dllPath = Path.Combine(localPath, "SfmlBinaries");
 
                 if (Environment.Is64BitOperatingSystem)
                 {

@@ -1,45 +1,44 @@
-﻿using SdlSharp;
-using SdlSharp.Graphics;
+﻿using SFML.Graphics;
+using SfmlSprite = SFML.Graphics.Sprite;
 
 namespace Iris.Graphics
 {
-    public class Sprite
+    public class Sprite : Drawable
     {
-        internal Surface LoadedSurface { get; }
         internal Texture RenderTexture { get; set; }
 
-        public float X { get; set; }
-        public float Y { get; set; }
+        public Vector2 Position { get; set; }
+        public Vector2 Origin { get; set; }
+        public Vector2 Scale { get; set; } = new Vector2(1, 1);
 
-        public float Scale { get; set; } = 1f;
-        public SpriteScalingMode ScalingMode { get; set; }
+        public float Rotation { get; set; }
+        
+        public float Width => RenderTexture.Size.X;
+        public float Height => RenderTexture.Size.Y;
 
-        public int Width => LoadedSurface.Size.Width;
-        public int Height => LoadedSurface.Size.Height;
-
-        public float ActualWidth => Width * Scale;
-        public float ActualHeight => Height * Scale;
+        public float ActualWidth => Width * Scale.X;
+        public float ActualHeight => Height * Scale.Y;
 
         public Color Color { get; set; } = Colors.White;
 
-        public Rectangle Rectangle => new Rectangle(
-            new Point((int)X, (int)Y),
-            new Size(Width, Height)
-        );
-
-        public RectangleF RectangleF => new RectangleF(
-            new PointF(X, Y),
-            new SizeF(Width, Height)
-        );
-
         public Sprite(string filePath)
         {
-            LoadedSurface = Image.Load(filePath);
+            RenderTexture = new Texture(filePath);
         }
 
-        public void Draw(RenderContext context)
+        public void Draw(RenderTarget target, RenderStates states)
         {
-            context.Draw(this);
+            var sfmlSprite = new SfmlSprite
+            {
+                Color = Color,
+                Position = Position.ToSfmlVector(),
+                Scale = Scale.ToSfmlVector(),
+                Origin = Origin.ToSfmlVector(),
+                Texture = RenderTexture,
+                Rotation = Rotation
+            };
+            
+            target.Draw(sfmlSprite, states);
         }
     }
 }

@@ -1,136 +1,97 @@
+using System;
 using Iris.Content;
 using Iris.Diagnostics;
 using Iris.Graphics;
-using SdlSharp;
-using SdlSharp.Graphics;
-using SdlSharp.Sound;
-using System;
+using SFML.Graphics;
+using SFML.System;
+using SFML.Window;
 
 namespace Iris
 {
     public class Game : IDisposable
     {
-        private bool _alreadyStarted;
-        private double _lastUpdateTime;
-
-        private Renderer Renderer { get; }
-        private RenderContext RenderContext { get; }
-        private GraphicsSettings GraphicsSettings { get; }
-
-        protected Application Application { get; }
-        protected Window Window { get; }
+        private RenderContext RenderContext { get; set; }
+        private Clock DeltaClock { get; }
 
         protected ContentManager Content { get; }
 
+        public RenderWindow Window { get; private set; }
+        public GraphicsSettings GraphicsSettings { get; }
         public FpsCounter FpsCounter { get; }
 
-        public bool Constructed { get; private set; }
+        public bool Running { get; set; }
         public bool Disposed { get; private set; }
 
         protected Game()
-            : this(
-                Subsystems.Everything,
-                WindowFlags.Desktop,
-                ImageFormats.Jpg | ImageFormats.Png,
-                MixerFormats.Mod | MixerFormats.Mp3 | MixerFormats.Ogg
-            )
-        {
-        }
-
-        protected Game(
-            Subsystems subsystems,
-            WindowFlags windowFlags,
-            ImageFormats imageFormats,
-            MixerFormats mixerFormats)
         {
             GraphicsSettings = new GraphicsSettings(this);
+
+            InitializeRenderingSystem(
+                new VideoMode(
+                    GraphicsSettings.WindowWidth,
+                    GraphicsSettings.WindowHeight,
+                    24
+                )
+            );
+
             Initialize(GraphicsSettings);
 
-            Application = new Application(
-                subsystems,
-                imageFormats,
-                mixerFormats
-            );
-            Application.Quitting += Application_Quitting;
-
-            Window = Window.Create(
-                new Size(
-                    GraphicsSettings.WindowWidth,
-                    GraphicsSettings.WindowHeight
-                ),
-                windowFlags,
-                out Renderer renderer
-            );
-
-            Renderer = renderer;
-            RenderContext = new RenderContext(renderer);
+            DeltaClock = new Clock();
             FpsCounter = new FpsCounter();
-
             Content = new ContentManager();
-            Constructed = true;
-
             LoadContent();
         }
-
+        
         public void Run()
         {
-            if (_alreadyStarted)
+            if (Running)
             {
                 throw new InvalidOperationException("Run() was already called before.");
             }
-            _alreadyStarted = true;
 
-            try
+            Running = true;
+
+            var delta = 0f;
+            while (Running)
             {
-                while (!Disposed)
-                {
-                    Application.DispatchEvent();
+                if (Window == null)
+                    continue;
+                
+                Window.DispatchEvents();
 
-                    var currentCounter = Timer.PerformanceCounter;
-                    var delta = (currentCounter - _lastUpdateTime) * 1000.0 / Timer.PerformanceFrequency;
 
-                    if (Disposed)
-                        break;
+                Window.Clear(GraphicsSettings.ClearColor);
+                Update(delta);
+                Draw(RenderContext);
 
-                    Update(delta);
+                Window.Display();
+                FpsCounter.Update();
 
-                    RenderContext.Clear(GraphicsSettings.ClearColor);
-                    Draw(RenderContext);
-                    Renderer.Present();
-
-                    FpsCounter.Update();
-
-                    _lastUpdateTime = currentCounter;
-                }
-            }
-            catch (SdlException)
-            {
-                // TODO: Log in the future. Now ignore.
-            }
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                Disposed = true;
-
-                Window.Dispose();
-                Application.Dispose();
+                delta = DeltaClock.ElapsedTime.AsSeconds();
+                DeltaClock.Restart();
             }
         }
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            Window.Dispose();
+            Disposed = true;
         }
 
-        internal void SetWindowSize(int width, int height)
+        internal void Resize(uint width, uint height)
         {
-            Window.Size = new Size(width, height);
-        }
+            Window.Closed -= Window_Closed;
+            Window.Close();
+            Window.Dispose();
 
+            InitializeRenderingSystem(
+                new VideoMode(
+                    width,
+                    height,
+                    24
+                )
+            );
+        }
 
         protected virtual void Initialize(GraphicsSettings settings)
         {
@@ -140,17 +101,27 @@ namespace Iris
         {
         }
 
-        protected virtual void Update(double deltaTime)
+        protected virtual void Update(float deltaTime)
         {
         }
 
         protected virtual void Draw(RenderContext context)
         {
         }
-
-        private void Application_Quitting(object sender, SdlEventArgs e)
+        
+        private void InitializeRenderingSystem(VideoMode videoMode)
         {
-            Dispose();
+            Window = new RenderWindow(videoMode, "Iris");
+            Window.SetActive(true);
+
+            Window.Closed += Window_Closed;
+            RenderContext = new RenderContext(Window);
+        }
+        
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Window.Close();
+            Running = false;
         }
     }
 }

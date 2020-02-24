@@ -1,3 +1,0 @@
-[submodule "Dependencies/SdlSharp"]
-	path = Dependencies/SdlSharp
-	url = https://github.com/Ciastex/sdl-sharp
