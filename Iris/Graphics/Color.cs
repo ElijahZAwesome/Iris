@@ -1,9 +1,44 @@
-using SFML.Graphics;
+﻿using SfmlColor = SFML.Graphics.Color;
 
 namespace Iris.Graphics
 {
-    public static class Colors
+    public struct Color
     {
+        public byte R;
+        public byte G;
+        public byte B;
+        public byte A;
+
+        public Color(byte r, byte g, byte b)
+            : this(r, g, b, 255) { }
+
+        public Color(byte r, byte g, byte b, byte a)
+        {
+            R = r;
+            G = g;
+            B = b;
+            A = a;
+        }
+
+        public Color(uint packedValue)
+        {
+            R = (byte)((packedValue & 0xFF000000) >> 24);
+            G = (byte)((packedValue & 0x00FF0000) >> 16);
+            B = (byte)((packedValue & 0x0000FF00) >> 8);
+            A = (byte)(packedValue & 0x000000FF);
+        }
+
+        public Color(Color other)
+        {
+            R = other.R;
+            G = other.G;
+            B = other.B;
+            A = other.A;
+        }
+
+        public Vector4 ToVector4()
+            => new Vector4(R, G, B, A);
+
         public static readonly Color AliceBlue = new Color(240, 248, 255);
         public static readonly Color AntiqueWhite = new Color(250, 235, 215);
         public static readonly Color Aqua = new Color(0, 255, 255);
@@ -137,11 +172,20 @@ namespace Iris.Graphics
         public static readonly Color Teal = new Color(0, 128, 128);
         public static readonly Color Thistle = new Color(216, 191, 216);
         public static readonly Color Tomato = new Color(255, 99, 71);
+        public static readonly Color Transparent = new Color(0, 0, 0, 255);
         public static readonly Color Turquoise = new Color(64, 224, 208);
         public static readonly Color Violet = new Color(238, 130, 238);
         public static readonly Color White = new Color(255, 255, 255);
         public static readonly Color WhiteSmoke = new Color(245, 245, 245);
         public static readonly Color Yellow = new Color(255, 255, 0);
         public static readonly Color YellowGreen = new Color(154, 205, 50);
+
+        internal SfmlColor ToSfmlColor()
+            => new SfmlColor(R, G, B, A);
+
+        public static implicit operator SfmlColor(Color color)
+        {
+            return color.ToSfmlColor();
+        }
     }
 }

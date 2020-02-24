@@ -45,7 +45,7 @@ namespace Iris.Graphics
             set => SfmlSprite.TextureRect = value.ToSfmlIntRect();
         }
 
-        public Color Color { get; set; } = Colors.White;
+        public Color Color { get; set; } = Color.White;
 
         public Sprite(string filePath)
         {

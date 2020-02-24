@@ -58,8 +58,8 @@ namespace Iris
                     continue;
                 
                 Window.DispatchEvents();
-                Window.Clear(GraphicsSettings.ClearColor);
 
+                RenderContext.Clear(GraphicsSettings.ClearColor);
                 Update(delta);
                 Draw(RenderContext);
 

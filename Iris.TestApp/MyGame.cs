@@ -16,7 +16,7 @@ namespace Iris.TestApp
         {
             settings.WindowWidth = 1024;
             settings.WindowHeight = 600;
-            settings.ClearColor = Colors.CornflowerBlue;
+            settings.ClearColor = Color.CornflowerBlue;
             settings.FramerateLimit = 0;
             settings.EnableVerticalSync = true;
         }

@@ -6,6 +6,7 @@ namespace Iris.Graphics
     public class RenderContext
     {
         private RenderWindow Window { get; }
+        private PixelShader UsedShader { get; set; }
 
         public RenderContext(RenderWindow window)
         {
@@ -40,9 +41,20 @@ namespace Iris.Graphics
             Window.Draw(rectShape);
         }
 
+        public void Clear(Color color)
+        {
+            Window.Clear(color);
+        }
+
         public void Draw(Sprite sprite)
         {
             Window.Draw(sprite.SfmlSprite);
+        }
+
+        public void UseShader(PixelShader shader)
+        {
+            UsedShader = shader;
+            Shader.Bind(shader.SfmlShader);
         }
     }
 }

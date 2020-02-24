@@ -56,7 +56,7 @@ namespace Iris.Graphics
             }
         }
 
-        public Color ClearColor { get; set; } = Colors.Black;
+        public Color ClearColor { get; set; } = Color.Black;
 
         internal GraphicsSettings(Game game)
         {
