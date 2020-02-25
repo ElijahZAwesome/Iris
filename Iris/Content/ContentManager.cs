@@ -56,6 +56,7 @@ namespace Iris.Content
         internal void RegisterBuiltinImporters()
         {
             RegisterImporter<Sprite, SpriteImporter>();
+            RegisterImporter<Spritesheet, SpritesheetImporter>();
             RegisterImporter<PixelShader, PixelShaderImporter>();
         }
     }

@@ -11,22 +11,22 @@ namespace Iris.Graphics
             SfmlShader = new SfmlShader(null, null, filePath);
         }
 
-        public void SetUniform(string name, Vector2 value)
+        public void Set(string name, Vector2 value)
             => SfmlShader.SetUniform(name, value.ToGlslVector());
 
-        public void SetUniform(string name, Vector3 value)
+        public void Set(string name, Vector3 value)
             => SfmlShader.SetUniform(name, value.ToGlslVector());
 
-        public void SetUniform(string name, Vector4 value)
+        public void Set(string name, Vector4 value)
             => SfmlShader.SetUniform(name, value.ToGlslVector());
 
-        public void SetUniform(string name, Color value)
-            => SetUniform(name, value.ToVector4());
+        public void Set(string name, Color value)
+            => Set(name, value.ToVector4());
 
-        public void SetUniform(string name, bool value)
+        public void Set(string name, bool value)
             => SfmlShader.SetUniform(name, value);
 
-        public void SetUniform(string name, float value)
+        public void Set(string name, float value)
             => SfmlShader.SetUniform(name, value);
     }
 }

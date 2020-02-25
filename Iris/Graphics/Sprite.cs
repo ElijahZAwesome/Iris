@@ -39,9 +39,9 @@ namespace Iris.Graphics
         public float ActualWidth => Width * Scale.X;
         public float ActualHeight => Height * Scale.Y;
 
-        public Quad TextureQuad
+        public Rectangle SourceRectangle
         {
-            get => SfmlSprite.TextureRect.ToIrisQuad();
+            get => SfmlSprite.TextureRect.ToIrisRectangle();
             set => SfmlSprite.TextureRect = value.ToSfmlIntRect();
         }
 

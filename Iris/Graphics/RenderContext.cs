@@ -1,5 +1,6 @@
 using SFML.Graphics;
 using SFML.System;
+using SfmlSprite = SFML.Graphics.Sprite;
 
 namespace Iris.Graphics
 {
@@ -7,7 +8,8 @@ namespace Iris.Graphics
     {
         private RenderWindow DefaultTarget { get; }
         private RenderTarget Target { get; set; }
-        private PixelShader UsedShader { get; set; }
+
+        public PixelShader CurrentShader { get; private set; }
 
         internal RenderContext(RenderWindow defaultTarget)
         {
@@ -25,7 +27,7 @@ namespace Iris.Graphics
                 OutlineThickness = thickness,
                 FillColor = Color.Transparent
             };
-            
+
             Target.Draw(rectShape);
         }
 
@@ -39,27 +41,45 @@ namespace Iris.Graphics
                 OutlineColor = Color.Transparent,
                 OutlineThickness = 0
             };
-            
+
             Target.Draw(rectShape);
         }
 
         public void Clear(Color color)
-        {
-            Target.Clear(color);
-        }
+            => Target.Clear(color);
 
         public void Draw(Sprite sprite)
+            => Target.Draw(sprite.SfmlSprite);
+
+        public void Draw(OffscreenBuffer buffer)
+            => Target.Draw(
+                new SfmlSprite(buffer.RenderTexture.Texture)
+            );
+
+        public void Draw(Spritesheet spritesheet, int cellIndex, Vector2 position, Vector2 scale, Color color)
         {
-            Target.Draw(sprite.SfmlSprite);
+            spritesheet.Configure(cellIndex, position, scale, color);
+            Draw(spritesheet.Sprite);
         }
 
-        public void UseShader(PixelShader shader)
+        public void UseOffscreenBuffer(OffscreenBuffer buffer)
         {
-            UsedShader = shader;
-            Shader.Bind(UsedShader?.SfmlShader);
+            if (buffer == null)
+            {
+                if (Target != null)
+                    (Target as RenderTexture).Display();
+
+                Target = DefaultTarget;
+                return;
+            }
+
+            Target = buffer.RenderTexture;
         }
 
-        public void SetTarget(RenderTarget target)
-            => Target = target ?? DefaultTarget;
+        public void UsePixelShader(PixelShader shader)
+        {
+            CurrentShader = shader;
+            Shader.Bind(shader?.SfmlShader);
+        }
     }
 }

@@ -1,25 +1,18 @@
-using System.Collections.Generic;
 using Iris.Graphics;
 
 namespace Iris.TestApp
 {
     public class MyGame : Game
     {
-        private int _horizDirection = 1;
-        private int _vertDirection = 1;
-
-        private float X { get; set; } = 100;
-        private float Y { get; set; } = 100;
-
-        private int _spriteCount = 100;
-        private readonly List<Sprite> _sprites = new List<Sprite>();
-
+        private OffscreenBuffer _offbuf;
         private PixelShader _shader;
+        private Sprite _sprite;
+        private Spritesheet _spritesheet;
 
         protected override void Initialize()
         {
-            GraphicsSettings.BackBufferWidth = 800;
-            GraphicsSettings.BackBufferHeight = 600;
+            GraphicsSettings.BackBufferWidth = 1366;
+            GraphicsSettings.BackBufferHeight = 768;
             GraphicsSettings.ClearColor = Color.CornflowerBlue;
             GraphicsSettings.FramerateLimit = 500;
             GraphicsSettings.EnableVerticalSync = true;
@@ -27,46 +20,36 @@ namespace Iris.TestApp
 
         protected override void LoadContent()
         {
+            _offbuf = new OffscreenBuffer(GraphicsSettings.BackBufferWidth, GraphicsSettings.BackBufferHeight);
+
             _shader = Content.Load<PixelShader>("shader.glsl");
-            
-            for (var i = 0; i < _spriteCount; i++)
-            {
-                _sprites.Add(Content.Load<Sprite>("wot2.png"));
-            }
+            _shader.Set("screenSize", new Vector2(GraphicsSettings.BackBufferWidth, GraphicsSettings.BackBufferHeight));
+            _shader.Set("scanlineDensity", 2f);
+            _shader.Set("blurDistance", .375f);
+
+            _spritesheet = Content.Load<Spritesheet>("terrain.png");
+            _spritesheet.CellHeight = 16;
+            _spritesheet.CellWidth = 16;
         }
 
         protected override void Draw(RenderContext context)
         {
-            context.UseShader(_shader);
-            context.Clear(Color.Azure);
-            
-            foreach(var sprite in _sprites)
+            context.UseOffscreenBuffer(_offbuf);
+            context.Clear(Color.CornflowerBlue);
+            for (var i = 0; i < _spritesheet.CellCount; i++)
             {
-                context.Draw(sprite);
+                context.Draw(_spritesheet, i, _spritesheet.GetGranularXY(i) * 32, new Vector2(2, 2), Color.White);
             }
+            context.UseOffscreenBuffer(null);
+
+            //context.UsePixelShader(_shader);
+            context.Draw(_offbuf);
+            //context.UsePixelShader(null);
         }
 
         protected override void Update(float deltaTime)
         {
-            WindowProperties.Title = $"FPS: {FpsCounter.FramesPerSecond:F2} | Delta {deltaTime:F6} | {_spriteCount} Sprites";
-
-            foreach (var sprite in _sprites)
-            {
-                if (X - 1 <= 0)
-                    _horizDirection = 1;
-                else if (X + sprite.ActualWidth >= GraphicsSettings.BackBufferWidth)
-                    _horizDirection = -1;
-
-                if (Y - 1 <= 0)
-                    _vertDirection = 1;
-                else if (Y + sprite.ActualHeight >= GraphicsSettings.BackBufferHeight)
-                    _vertDirection = -1;
-
-                X += 2 * _horizDirection * deltaTime;
-                Y += 2 * _vertDirection * deltaTime;
-
-                sprite.Position = new Vector2(X, Y);
-            }
+            WindowProperties.Title = $"FPS: {FpsCounter.FramesPerSecond:F2} | Delta {deltaTime:F6}";
         }
     }
 }
