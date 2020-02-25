@@ -47,7 +47,7 @@ namespace Iris.Graphics
 
         public Color Color { get; set; } = Color.White;
 
-        public Sprite(string filePath)
+        internal Sprite(string filePath)
         {
             RenderTexture = new Texture(filePath);
             SfmlSprite = new SfmlSprite(RenderTexture);

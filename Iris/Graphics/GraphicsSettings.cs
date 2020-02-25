@@ -1,38 +1,39 @@
-using SFML.Graphics;
+using SFML.Window;
 
 namespace Iris.Graphics
 {
     public class GraphicsSettings
     {
         private readonly Game _game;
-
-        private uint _windowWidth = 640;
-        private uint _windowHeight = 480;
+        
+        private uint _backBufferWidth = 640;
+        private uint _backBufferHeight = 480;
         private uint _framerateLimit = 60;
+        private uint _screenDepth = 24;
 
         private bool _enableVerticalSync;
 
-        public uint WindowWidth
+        public uint BackBufferWidth
         {
-            get => _windowWidth;
+            get => _backBufferWidth;
             set
             {
-                _windowWidth = value;
+                _backBufferWidth = value;
 
                 if (_game.Window != null)
-                    _game.Resize(_windowWidth, _windowHeight);
+                    _game.ResetWindow();
             }
         }
 
-        public uint WindowHeight
+        public uint BackBufferHeight
         {
-            get => _windowHeight;
+            get => _backBufferHeight;
             set
             {
-                _windowHeight = value;
+                _backBufferHeight = value;
 
                 if (_game.Window != null)
-                    _game.Resize(_windowWidth, _windowHeight);
+                    _game.ResetWindow();
             }
         }
 
@@ -56,7 +57,26 @@ namespace Iris.Graphics
             }
         }
 
+        public uint ScreenDepth
+        {
+            get => _screenDepth;
+            set
+            {
+                _screenDepth = value;
+
+                if (_game.Window != null)
+                    _game.ResetWindow();
+            }
+        }
+
         public Color ClearColor { get; set; } = Color.Black;
+
+        internal VideoMode VideoMode 
+            => new VideoMode(
+                BackBufferWidth,
+                BackBufferHeight,
+                ScreenDepth
+            );
 
         internal GraphicsSettings(Game game)
         {

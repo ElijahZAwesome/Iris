@@ -5,12 +5,14 @@ namespace Iris.Graphics
 {
     public class RenderContext
     {
-        private RenderWindow Window { get; }
+        private RenderWindow DefaultTarget { get; }
+        private RenderTarget Target { get; set; }
         private PixelShader UsedShader { get; set; }
 
-        public RenderContext(RenderWindow window)
+        internal RenderContext(RenderWindow defaultTarget)
         {
-            Window = window;
+            DefaultTarget = defaultTarget;
+            Target = DefaultTarget;
         }
 
         public void DrawRectangle(float x, float y, float width, float height, Color color, float thickness = 1.0f)
@@ -24,7 +26,7 @@ namespace Iris.Graphics
                 FillColor = Color.Transparent
             };
             
-            Window.Draw(rectShape);
+            Target.Draw(rectShape);
         }
 
         public void FillRectangle(float x, float y, float width, float height, Color color)
@@ -38,23 +40,26 @@ namespace Iris.Graphics
                 OutlineThickness = 0
             };
             
-            Window.Draw(rectShape);
+            Target.Draw(rectShape);
         }
 
         public void Clear(Color color)
         {
-            Window.Clear(color);
+            Target.Clear(color);
         }
 
         public void Draw(Sprite sprite)
         {
-            Window.Draw(sprite.SfmlSprite);
+            Target.Draw(sprite.SfmlSprite);
         }
 
         public void UseShader(PixelShader shader)
         {
             UsedShader = shader;
-            Shader.Bind(shader.SfmlShader);
+            Shader.Bind(UsedShader?.SfmlShader);
         }
+
+        public void SetTarget(RenderTarget target)
+            => Target = target ?? DefaultTarget;
     }
 }

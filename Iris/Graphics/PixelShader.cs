@@ -6,7 +6,7 @@ namespace Iris.Graphics
     {
         internal SfmlShader SfmlShader { get; }
 
-        public PixelShader(string filePath)
+        internal PixelShader(string filePath)
         {
             SfmlShader = new SfmlShader(null, null, filePath);
         }

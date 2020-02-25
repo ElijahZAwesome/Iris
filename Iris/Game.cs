@@ -4,7 +4,6 @@ using Iris.Diagnostics;
 using Iris.Graphics;
 using SFML.Graphics;
 using SFML.System;
-using SFML.Window;
 
 namespace Iris
 {
@@ -15,8 +14,11 @@ namespace Iris
 
         protected ContentManager Content { get; }
 
-        public RenderWindow Window { get; private set; }
+        internal RenderWindow Window { get; private set; }
+        
         public GraphicsSettings GraphicsSettings { get; }
+        public WindowProperties WindowProperties { get; }
+        
         public FpsCounter FpsCounter { get; }
 
         public bool Running { get; set; }
@@ -24,21 +26,16 @@ namespace Iris
 
         protected Game()
         {
+            WindowProperties = new WindowProperties(this);
             GraphicsSettings = new GraphicsSettings(this);
-
-            InitializeRenderingSystem(
-                new VideoMode(
-                    GraphicsSettings.WindowWidth,
-                    GraphicsSettings.WindowHeight,
-                    24
-                )
-            );
-
-            Initialize(GraphicsSettings);
+            
+            ResetWindow();
+            Initialize();
 
             DeltaClock = new Clock();
             FpsCounter = new FpsCounter();
             Content = new ContentManager();
+            
             LoadContent();
         }
         
@@ -59,7 +56,6 @@ namespace Iris
                 
                 Window.DispatchEvents();
 
-                RenderContext.Clear(GraphicsSettings.ClearColor);
                 Update(delta);
                 Draw(RenderContext);
 
@@ -77,22 +73,19 @@ namespace Iris
             Disposed = true;
         }
 
-        internal void Resize(uint width, uint height)
+        internal void ResetWindow()
         {
-            Window.Closed -= Window_Closed;
-            Window.Close();
-            Window.Dispose();
+            if (Window != null)
+            {
+                Window.Closed -= Window_Closed;
+                Window.Close();
+                Window.Dispose();
+            }
 
-            InitializeRenderingSystem(
-                new VideoMode(
-                    width,
-                    height,
-                    24
-                )
-            );
+            InitializeRenderingSystem();
         }
 
-        protected virtual void Initialize(GraphicsSettings settings)
+        protected virtual void Initialize()
         {
         }
 
@@ -108,9 +101,13 @@ namespace Iris
         {
         }
         
-        private void InitializeRenderingSystem(VideoMode videoMode)
+        private void InitializeRenderingSystem()
         {
-            Window = new RenderWindow(videoMode, "Iris");
+            Window = new RenderWindow(
+                GraphicsSettings.VideoMode, 
+                WindowProperties.Title,
+                WindowProperties.WindowStyle
+            );
             Window.SetActive(true);
 
             Window.Closed += Window_Closed;

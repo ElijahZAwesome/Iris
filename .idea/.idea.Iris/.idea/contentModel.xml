@@ -8,6 +8,7 @@
         <e p="Content" t="Include">
           <e p="ContentImporters" t="Include">
             <e p="ContentImporter.cs" t="Include" />
+            <e p="PixelShaderImporter.cs" t="Include" />
             <e p="SpriteImporter.cs" t="Include" />
           </e>
           <e p="ContentManager.cs" t="Include" />
@@ -23,16 +24,27 @@
         <e p="FodyWeavers.xml" t="Include" />
         <e p="Game.cs" t="Include" />
         <e p="Graphics" t="Include">
-          <e p="Colors.cs" t="Include" />
+          <e p="Color.cs" t="Include" />
           <e p="GraphicsSettings.cs" t="Include" />
+          <e p="PixelShader.cs" t="Include" />
           <e p="RenderContext.cs" t="Include" />
           <e p="Sprite.cs" t="Include" />
+          <e p="WindowProperties.cs" t="Include" />
+        </e>
+        <e p="Internal" t="Include">
+          <e p="SfmlExtensions.cs" t="Include" />
         </e>
         <e p="Iris.csproj" t="IncludeRecursive" />
         <e p="ModuleInitializer.cs" t="Include" />
         <e p="Quad.cs" t="Include" />
         <e p="SfmlBinaries" t="Include">
-          <e p="Win32" t="Include" />
+          <e p="Win32" t="Include">
+            <e p="csfml-audio-2.dll" t="Include" />
+            <e p="csfml-graphics-2.dll" t="Include" />
+            <e p="csfml-network-2.dll" t="Include" />
+            <e p="csfml-system-2.dll" t="Include" />
+            <e p="csfml-window-2.dll" t="Include" />
+          </e>
           <e p="Win64" t="Include">
             <e p="csfml-audio-2.dll" t="Include" />
             <e p="csfml-graphics-2.dll" t="Include" />
@@ -42,6 +54,8 @@
           </e>
         </e>
         <e p="Vector2.cs" t="Include" />
+        <e p="Vector3.cs" t="Include" />
+        <e p="Vector4.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
@@ -53,6 +67,7 @@
       </e>
       <e p="Iris.TestApp" t="IncludeRecursive">
         <e p="Content" t="Include">
+          <e p="shader.glsl" t="Include" />
           <e p="wot2.png" t="Include" />
         </e>
         <e p="Iris.TestApp.csproj" t="IncludeRecursive" />

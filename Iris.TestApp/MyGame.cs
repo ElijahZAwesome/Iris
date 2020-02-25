@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Iris.Graphics;
 
 namespace Iris.TestApp
@@ -10,45 +11,62 @@ namespace Iris.TestApp
         private float X { get; set; } = 100;
         private float Y { get; set; } = 100;
 
-        private Sprite _sprite;
+        private int _spriteCount = 100;
+        private readonly List<Sprite> _sprites = new List<Sprite>();
 
-        protected override void Initialize(GraphicsSettings settings)
+        private PixelShader _shader;
+
+        protected override void Initialize()
         {
-            settings.WindowWidth = 1024;
-            settings.WindowHeight = 600;
-            settings.ClearColor = Color.CornflowerBlue;
-            settings.FramerateLimit = 0;
-            settings.EnableVerticalSync = true;
+            GraphicsSettings.BackBufferWidth = 800;
+            GraphicsSettings.BackBufferHeight = 600;
+            GraphicsSettings.ClearColor = Color.CornflowerBlue;
+            GraphicsSettings.FramerateLimit = 500;
+            GraphicsSettings.EnableVerticalSync = true;
         }
 
         protected override void LoadContent()
         {
-            _sprite = Content.Load<Sprite>("wot2.png");
+            _shader = Content.Load<PixelShader>("shader.glsl");
+            
+            for (var i = 0; i < _spriteCount; i++)
+            {
+                _sprites.Add(Content.Load<Sprite>("wot2.png"));
+            }
         }
 
         protected override void Draw(RenderContext context)
         {
-            context.Draw(_sprite);
+            context.UseShader(_shader);
+            context.Clear(Color.Azure);
+            
+            foreach(var sprite in _sprites)
+            {
+                context.Draw(sprite);
+            }
         }
 
         protected override void Update(float deltaTime)
         {
-            Window.SetTitle($"FPS: {FpsCounter.FramesPerSecond:F2} | Delta {deltaTime:F6}");
+            WindowProperties.Title = $"FPS: {FpsCounter.FramesPerSecond:F2} | Delta {deltaTime:F6} | {_spriteCount} Sprites";
 
-            if (X - 1 <= 0)
-                _horizDirection = 1;
-            else if (X + _sprite.ActualWidth >= Window.Size.X)
-                _horizDirection = -1;
+            foreach (var sprite in _sprites)
+            {
+                if (X - 1 <= 0)
+                    _horizDirection = 1;
+                else if (X + sprite.ActualWidth >= GraphicsSettings.BackBufferWidth)
+                    _horizDirection = -1;
 
-            if (Y - 1 <= 0)
-                _vertDirection = 1;
-            else if (Y + _sprite.ActualHeight >= Window.Size.Y)
-                _vertDirection = -1;
+                if (Y - 1 <= 0)
+                    _vertDirection = 1;
+                else if (Y + sprite.ActualHeight >= GraphicsSettings.BackBufferHeight)
+                    _vertDirection = -1;
 
-            X += 140 * _horizDirection * deltaTime;
-            Y += 140 * _vertDirection * deltaTime;
-            
-            _sprite.Position = new Vector2(X, Y);
+                X += 2 * _horizDirection * deltaTime;
+                Y += 2 * _vertDirection * deltaTime;
+
+                sprite.Position = new Vector2(X, Y);
+            }
         }
     }
 }
