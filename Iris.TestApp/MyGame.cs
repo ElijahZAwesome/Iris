@@ -12,7 +12,7 @@ namespace Iris.TestApp
         {
             GraphicsSettings.BackBufferWidth = 1024;
             GraphicsSettings.BackBufferHeight = 600;
-            GraphicsSettings.ClearColor = Color.CornflowerBlue;
+            GraphicsSettings.ClearColor = Color.Black;
             GraphicsSettings.FramerateLimit = 500;
             GraphicsSettings.EnableVerticalSync = true;
         }
