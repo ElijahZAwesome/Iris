@@ -71,6 +71,9 @@ namespace Iris
         public static Vector2 operator*(Vector2 left, float right)
             => new Vector2(left.X * right, left.Y * right);
 
+        public static Vector2 operator /(Vector2 left, float right)
+            => new Vector2(left.X * right, left.Y * right);
+
         internal Vector2f ToSfmlVector()
             => new Vector2f(X, Y);
 

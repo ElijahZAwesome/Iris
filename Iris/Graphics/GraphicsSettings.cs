@@ -5,13 +5,15 @@ namespace Iris.Graphics
     public class GraphicsSettings
     {
         private readonly Game _game;
-        
+
         private uint _backBufferWidth = 640;
         private uint _backBufferHeight = 480;
         private uint _framerateLimit = 60;
-        private uint _screenDepth = 24;
+        private uint _colorDepth = 24;
 
         private bool _enableVerticalSync;
+
+        public bool UpdateImmediately { get; set; }
 
         public uint BackBufferWidth
         {
@@ -20,7 +22,7 @@ namespace Iris.Graphics
             {
                 _backBufferWidth = value;
 
-                if (_game.Window != null)
+                if (UpdateImmediately)
                     _game.ResetWindow();
             }
         }
@@ -32,8 +34,20 @@ namespace Iris.Graphics
             {
                 _backBufferHeight = value;
 
-                if (_game.Window != null)
+                if (UpdateImmediately)
                     _game.ResetWindow();
+            }
+        }
+
+        public uint ColorDepth
+        {
+            get => _colorDepth;
+            set
+            {
+                _colorDepth = value;
+
+                if (UpdateImmediately)
+                    CommitChanges();
             }
         }
 
@@ -43,7 +57,9 @@ namespace Iris.Graphics
             set
             {
                 _enableVerticalSync = value;
-                _game.Window?.SetVerticalSyncEnabled(_enableVerticalSync);
+
+                if (UpdateImmediately)
+                    CommitChanges();
             }
         }
 
@@ -53,29 +69,28 @@ namespace Iris.Graphics
             set
             {
                 _framerateLimit = value;
-                _game.Window?.SetFramerateLimit(_framerateLimit);
+
+                if (UpdateImmediately)
+                    CommitChanges();
             }
         }
 
-        public uint ScreenDepth
+        public void CommitChanges()
         {
-            get => _screenDepth;
-            set
+            if (_game.Window != null)
             {
-                _screenDepth = value;
+                _game.ResetWindow();
 
-                if (_game.Window != null)
-                    _game.ResetWindow();
+                _game.Window.SetFramerateLimit(_framerateLimit);
+                _game.Window.SetVerticalSyncEnabled(_enableVerticalSync);
             }
         }
 
-        public Color ClearColor { get; set; } = Color.Black;
-
-        internal VideoMode VideoMode 
+        internal VideoMode VideoMode
             => new VideoMode(
                 BackBufferWidth,
                 BackBufferHeight,
-                ScreenDepth
+                ColorDepth
             );
 
         internal GraphicsSettings(Game game)

@@ -79,6 +79,9 @@ namespace Iris
         public static Vector3 operator *(Vector3 left, float right)
             => new Vector3(left.X * right, left.Y * right, left.Z * right);
 
+        public static Vector3 operator /(Vector3 left, float right)
+            => new Vector3(left.X / right, left.Y / right, left.Z / right);
+
         internal Vector3f ToSfmlVector()
             => new Vector3f(X, Y, Z);
 

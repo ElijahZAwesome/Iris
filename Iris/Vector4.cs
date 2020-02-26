@@ -73,6 +73,9 @@ namespace Iris
         public static Vector4 operator *(Vector4 left, float right)
             => new Vector4(left.X * right, left.Y * right, left.Z * right, left.W * right);
 
+        public static Vector4 operator /(Vector4 left, float right)
+            => new Vector4(left.X / right, left.Y / right, left.Z / right, left.W / right);
+
         internal Vec4 ToGlslVector()
             => new Vec4(X, Y, Z, W);
     }

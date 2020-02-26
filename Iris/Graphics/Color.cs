@@ -8,6 +8,21 @@ namespace Iris.Graphics
         public byte G;
         public byte B;
         public byte A;
+        
+        public uint PackedValue
+        {
+            get
+            {
+                var value = 0u;
+
+                value |= (uint)(R << 24);
+                value |= (uint)(G << 16);
+                value |= (uint)(B << 8);
+                value |= A;
+
+                return value;
+            }
+        }
 
         public Color(byte r, byte g, byte b)
             : this(r, g, b, 255) { }
@@ -183,9 +198,16 @@ namespace Iris.Graphics
         internal SfmlColor ToSfmlColor()
             => new SfmlColor(R, G, B, A);
 
+        public static bool operator ==(Color left, Color right)
+            => left.R == right.R &&
+               left.G == right.G &&
+               left.B == right.B &&
+               left.A == right.A;
+
+        public static bool operator !=(Color left, Color right)
+            => !(left == right);
+
         public static implicit operator SfmlColor(Color color)
-        {
-            return color.ToSfmlColor();
-        }
+            => color.ToSfmlColor(); 
     }
 }

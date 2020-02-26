@@ -2,8 +2,10 @@ using System;
 using Iris.Content;
 using Iris.Diagnostics;
 using Iris.Graphics;
+using Iris.Input;
 using SFML.Graphics;
 using SFML.System;
+using SFML.Window;
 
 namespace Iris
 {
@@ -15,10 +17,10 @@ namespace Iris
         protected ContentManager Content { get; }
 
         internal RenderWindow Window { get; private set; }
-        
+
         public GraphicsSettings GraphicsSettings { get; }
         public WindowProperties WindowProperties { get; }
-        
+
         public FpsCounter FpsCounter { get; }
 
         public bool Running { get; set; }
@@ -28,17 +30,17 @@ namespace Iris
         {
             WindowProperties = new WindowProperties(this);
             GraphicsSettings = new GraphicsSettings(this);
-            
-            ResetWindow();
-            Initialize();
 
             DeltaClock = new Clock();
             FpsCounter = new FpsCounter();
             Content = new ContentManager();
-            
+
+            ResetWindow();
+            Initialize();
+
             LoadContent();
         }
-        
+
         public void Run()
         {
             if (Running)
@@ -53,7 +55,7 @@ namespace Iris
             {
                 if (Window == null)
                     continue;
-                
+
                 Window.DispatchEvents();
 
                 Update(delta);
@@ -65,6 +67,9 @@ namespace Iris
                 delta = DeltaClock.ElapsedTime.AsSeconds();
                 DeltaClock.Restart();
             }
+
+            Window?.Close();
+            Exiting();
         }
 
         public void Dispose()
@@ -77,7 +82,8 @@ namespace Iris
         {
             if (Window != null)
             {
-                Window.Closed -= Window_Closed;
+                DisconnectWindowEvents();
+
                 Window.Close();
                 Window.Dispose();
             }
@@ -100,24 +106,82 @@ namespace Iris
         protected virtual void Draw(RenderContext context)
         {
         }
-        
+
+        protected virtual void TextInput(char character)
+        {
+        }
+
+        protected virtual void KeyPressed(KeyCode keyCode, KeyModifiers modifiers)
+        {
+        }
+
+        protected virtual void KeyReleased(KeyCode keyCode, KeyModifiers modifiers)
+        {
+        }
+
+        protected virtual void Exiting()
+        {
+        }
+
         private void InitializeRenderingSystem()
         {
             Window = new RenderWindow(
-                GraphicsSettings.VideoMode, 
+                GraphicsSettings.VideoMode,
                 WindowProperties.Title,
                 WindowProperties.WindowStyle
             );
             Window.SetActive(true);
 
-            Window.Closed += Window_Closed;
+            ConnectWindowEvents();
             RenderContext = new RenderContext(Window);
         }
-        
+
+        private void ConnectWindowEvents()
+        {
+            Window.Closed += Window_Closed;
+            Window.KeyPressed += Window_KeyPressed;
+            Window.KeyReleased += Window_KeyReleased;
+            Window.TextEntered += Window_TextEntered;
+        }
+
+        private void DisconnectWindowEvents()
+        {
+            Window.Closed -= Window_Closed;
+            Window.TextEntered -= Window_TextEntered;
+        }
+
         private void Window_Closed(object sender, EventArgs e)
         {
-            Window.Close();
             Running = false;
+        }
+
+        private void Window_TextEntered(object sender, TextEventArgs e)
+        {
+            TextInput(e.Unicode[0]);
+        }
+
+        private void Window_KeyReleased(object sender, KeyEventArgs e)
+        {
+            var modifiers = KeyModifiers.None;
+
+            if (e.Control) modifiers |= KeyModifiers.Ctrl;
+            if (e.Alt) modifiers |= KeyModifiers.Alt;
+            if (e.System) modifiers |= KeyModifiers.System;
+            if (e.Shift) modifiers |= KeyModifiers.Shift;
+
+            KeyReleased((KeyCode)e.Code, modifiers);
+        }
+
+        private void Window_KeyPressed(object sender, KeyEventArgs e)
+        {
+            var modifiers = KeyModifiers.None;
+
+            if (e.Control) modifiers |= KeyModifiers.Ctrl;
+            if (e.Alt) modifiers |= KeyModifiers.Alt;
+            if (e.System) modifiers |= KeyModifiers.System;
+            if (e.Shift) modifiers |= KeyModifiers.Shift;
+
+            KeyPressed((KeyCode)e.Code, modifiers);
         }
     }
 }

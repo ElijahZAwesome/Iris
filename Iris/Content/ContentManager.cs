@@ -31,6 +31,21 @@ namespace Iris.Content
              )
         { }
 
+        public Stream GetRawContentFileStream(string path, FileMode fileMode = FileMode.Open, FileAccess fileAccess = FileAccess.Read)
+        {
+            return new FileStream(
+                Path.Combine(ContentRoot, path), 
+                fileMode, 
+                fileAccess
+            );
+        }
+
+        public string GetRawContentFileString(string path)
+        {
+            using var sr = new StreamReader(GetRawContentFileStream(path));
+            return sr.ReadToEnd();
+        }
+
         public T Load<T>(string relativePath) where T : class
         {
             var completePath = Path.Combine(ContentRoot, relativePath);
@@ -58,6 +73,7 @@ namespace Iris.Content
             RegisterImporter<Sprite, SpriteImporter>();
             RegisterImporter<Spritesheet, SpritesheetImporter>();
             RegisterImporter<PixelShader, PixelShaderImporter>();
+            RegisterImporter<Font, FontImporter>();
         }
     }
 }

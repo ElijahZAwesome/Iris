@@ -1,3 +1,4 @@
+using Iris.Internal;
 using SFML.Graphics;
 using SFML.System;
 using SfmlSprite = SFML.Graphics.Sprite;
@@ -8,18 +9,21 @@ namespace Iris.Graphics
     {
         private RenderWindow DefaultTarget { get; }
         private RenderTarget Target { get; set; }
+        private RenderStates RenderStates { get; set; } = RenderStates.Default;
 
         public PixelShader CurrentShader { get; private set; }
+        public BlendingMode BlendingMode { get; private set; }
 
         internal RenderContext(RenderWindow defaultTarget)
         {
             DefaultTarget = defaultTarget;
             Target = DefaultTarget;
+            BlendingMode = BlendingMode.Default;
         }
 
         public void DrawRectangle(float x, float y, float width, float height, Color color, float thickness = 1.0f)
         {
-            var rectShape = new RectangleShape
+            using var rectShape = new RectangleShape
             {
                 Position = new Vector2f(x, y),
                 Size = new Vector2f(width, height),
@@ -28,12 +32,12 @@ namespace Iris.Graphics
                 FillColor = Color.Transparent
             };
 
-            Target.Draw(rectShape);
+            Target.Draw(rectShape, RenderStates);
         }
 
         public void FillRectangle(float x, float y, float width, float height, Color color)
         {
-            var rectShape = new RectangleShape
+            using var rectShape = new RectangleShape
             {
                 Position = new Vector2f(x, y),
                 Size = new Vector2f(width, height),
@@ -42,24 +46,54 @@ namespace Iris.Graphics
                 OutlineThickness = 0
             };
 
-            Target.Draw(rectShape);
+            Target.Draw(rectShape, RenderStates);
         }
 
         public void Clear(Color color)
             => Target.Clear(color);
 
         public void Draw(Sprite sprite)
-            => Target.Draw(sprite.SfmlSprite);
+            => Target.Draw(sprite.SfmlSprite, RenderStates);
 
         public void Draw(OffscreenBuffer buffer)
-            => Target.Draw(
-                new SfmlSprite(buffer.RenderTexture.Texture)
-            );
+        {
+            using var sprite = new SfmlSprite(buffer.RenderTexture.Texture);
+            Target.Draw(sprite, RenderStates);
+        }
 
         public void Draw(Spritesheet spritesheet, int cellIndex, Vector2 position, Vector2 scale, Color color)
         {
             spritesheet.Configure(cellIndex, position, scale, color);
             Draw(spritesheet.Sprite);
+        }
+
+        public void DrawString(Font font, string str, Vector2 position, float rotation, Color color)
+        {
+            using var text = font.ConstructText(str);
+
+            text.FillColor = color;
+            text.Position = position.ToSfmlVector();
+            text.Rotation = rotation;
+            Target.Draw(text, RenderStates);
+        }
+
+        public void DrawString(Font font, string str, Vector2 position, Color color)
+            => DrawString(font, str, position, 0.0f, color);
+
+        public void DrawLine(Vector2 a, Vector2 b, float lineThickness, Color color)
+        {
+            var line = new LineDrawable(a, b, color, lineThickness);
+            Target.Draw(line, RenderStates);
+        }
+
+        public void BlendUsing(BlendingMode blendingMode)
+        {
+            RenderStates = new RenderStates(
+                blendingMode.ToSfmlBlendMode(),
+                RenderStates.Transform,
+                RenderStates.Texture,
+                RenderStates.Shader
+            );
         }
 
         public void UseOffscreenBuffer(OffscreenBuffer buffer)
