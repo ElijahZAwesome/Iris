@@ -1,8 +1,10 @@
+#version 130
+
 uniform sampler2D texture;
 
 uniform vec2 screenSize;
 uniform float scanlineDensity;
-uniform float blurDistance = 0.0012f;
+uniform float blurDistance;
 
 vec4 blur5(sampler2D image, vec2 uv, vec2 resolution, vec2 direction) {
   vec4 color = vec4(0.0);
@@ -22,13 +24,13 @@ void main()
     finalColor = blur5(texture, coords, screenSize, vec2(blurDistance, 0));
     finalColor += blur5(texture, coords, screenSize, vec2(-blurDistance, 0));
 
-    int actualPixelY = coords.y * screenSize.y;
-    int modulus = mod(actualPixelY, scanlineDensity);
+    int actualPixelY = int(coords.y * screenSize.y);
+    int modulus = int(mod(actualPixelY, scanlineDensity));
 
     if(modulus == 0 && actualPixelY != 0)
         finalColor /= 1.9f;
 
     finalColor /= 2.15f;
 
-    gl_FragColor = finalColor * 1.3f;
+    gl_FragColor = finalColor;
 }

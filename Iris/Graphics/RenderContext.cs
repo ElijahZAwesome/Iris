@@ -100,9 +100,7 @@ namespace Iris.Graphics
         {
             if (buffer == null)
             {
-                if (Target != null)
-                    (Target as RenderTexture).Display();
-
+                (Target as RenderTexture)?.Display();
                 Target = DefaultTarget;
                 return;
             }

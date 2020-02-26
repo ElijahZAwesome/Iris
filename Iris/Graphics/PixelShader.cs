@@ -1,4 +1,5 @@
-﻿using SfmlShader = SFML.Graphics.Shader;
+﻿using Iris.Exceptions;
+using SfmlShader = SFML.Graphics.Shader;
 
 namespace Iris.Graphics
 {
@@ -8,6 +9,11 @@ namespace Iris.Graphics
 
         internal PixelShader(string filePath)
         {
+            if (!SfmlShader.IsAvailable)
+            {
+                throw new ShaderNotSupportedException("Pixel shaders are not supported on this platform.");
+            }
+            
             SfmlShader = new SfmlShader(null, null, filePath);
         }
 
