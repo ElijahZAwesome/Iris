@@ -5,47 +5,40 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Fody" Version="6.1.1">
+    <None Remove="costura32\csfml-audio-2.dll" />
+    <None Remove="costura32\csfml-graphics-2.dll" />
+    <None Remove="costura32\csfml-network-2.dll" />
+    <None Remove="costura32\csfml-system-2.dll" />
+    <None Remove="costura32\csfml-window-2.dll" />
+    <None Remove="costura64\csfml-audio-2.dll" />
+    <None Remove="costura64\csfml-graphics-2.dll" />
+    <None Remove="costura64\csfml-network-2.dll" />
+    <None Remove="costura64\csfml-system-2.dll" />
+    <None Remove="costura64\csfml-window-2.dll" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Include="costura32\csfml-audio-2.dll" />
+    <EmbeddedResource Include="costura32\csfml-graphics-2.dll" />
+    <EmbeddedResource Include="costura32\csfml-network-2.dll" />
+    <EmbeddedResource Include="costura32\csfml-system-2.dll" />
+    <EmbeddedResource Include="costura32\csfml-window-2.dll" />
+    <EmbeddedResource Include="costura64\csfml-audio-2.dll" />
+    <EmbeddedResource Include="costura64\csfml-graphics-2.dll"/>
+    <EmbeddedResource Include="costura64\csfml-network-2.dll"/>
+    <EmbeddedResource Include="costura64\csfml-system-2.dll"/>
+    <EmbeddedResource Include="costura64\csfml-window-2.dll"/>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Costura.Fody" Version="4.1.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ModuleInit.Fody" Version="2.1.0">
+    <PackageReference Include="Fody" Version="6.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     
     <PackageReference Include="SFML.Net" Version="2.5.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="SfmlBinaries\Win32\csfml-audio-2.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="SfmlBinaries\Win32\csfml-graphics-2.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="SfmlBinaries\Win32\csfml-network-2.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="SfmlBinaries\Win32\csfml-system-2.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="SfmlBinaries\Win32\csfml-window-2.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="SfmlBinaries\Win64\csfml-audio-2.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="SfmlBinaries\Win64\csfml-graphics-2.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="SfmlBinaries\Win64\csfml-network-2.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="SfmlBinaries\Win64\csfml-system-2.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="SfmlBinaries\Win64\csfml-window-2.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 </Project>
