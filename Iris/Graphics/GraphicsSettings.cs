@@ -5,13 +5,15 @@ namespace Iris.Graphics
     public class GraphicsSettings
     {
         private readonly Game _game;
-        
+
         private uint _backBufferWidth = 640;
         private uint _backBufferHeight = 480;
         private uint _framerateLimit = 60;
-        private uint _screenDepth = 24;
+        private uint _colorDepth = 24;
 
         private bool _enableVerticalSync;
+
+        private OpenGlVersion _openGlVersion = OpenGlVersion.OpenGl30;
 
         public uint BackBufferWidth
         {
@@ -57,12 +59,24 @@ namespace Iris.Graphics
             }
         }
 
-        public uint ScreenDepth
+        public uint ColorDepth
         {
-            get => _screenDepth;
+            get => _colorDepth;
             set
             {
-                _screenDepth = value;
+                _colorDepth = value;
+
+                if (_game.Window != null)
+                    _game.ResetWindow();
+            }
+        }
+
+        public OpenGlVersion OpenGlVersion
+        {
+            get => _openGlVersion;
+            set
+            {
+                _openGlVersion = value;
 
                 if (_game.Window != null)
                     _game.ResetWindow();
@@ -71,11 +85,19 @@ namespace Iris.Graphics
 
         public Color ClearColor { get; set; } = Color.Black;
 
-        internal VideoMode VideoMode 
+        internal VideoMode VideoMode
             => new VideoMode(
                 BackBufferWidth,
                 BackBufferHeight,
-                ScreenDepth
+                ColorDepth
+            );
+
+        internal ContextSettings ContextSettings
+            => new ContextSettings(0, 0, 0,
+                OpenGlVersion.Major,
+                OpenGlVersion.Minor,
+                ContextSettings.Attribute.Default,
+                true
             );
 
         internal GraphicsSettings(Game game)

@@ -6,13 +6,12 @@ namespace Iris.TestApp
     {
         private OffscreenBuffer _offbuf;
         private PixelShader _shader;
-        private Sprite _sprite;
         private Spritesheet _spritesheet;
 
         protected override void Initialize()
         {
-            GraphicsSettings.BackBufferWidth = 1366;
-            GraphicsSettings.BackBufferHeight = 768;
+            GraphicsSettings.BackBufferWidth = 1024;
+            GraphicsSettings.BackBufferHeight = 600;
             GraphicsSettings.ClearColor = Color.CornflowerBlue;
             GraphicsSettings.FramerateLimit = 500;
             GraphicsSettings.EnableVerticalSync = true;
@@ -42,9 +41,9 @@ namespace Iris.TestApp
             }
             context.UseOffscreenBuffer(null);
 
-            //context.UsePixelShader(_shader);
+            context.UsePixelShader(_shader);
             context.Draw(_offbuf);
-            //context.UsePixelShader(null);
+            context.UsePixelShader(null);
         }
 
         protected override void Update(float deltaTime)

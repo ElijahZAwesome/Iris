@@ -106,7 +106,8 @@ namespace Iris
             Window = new RenderWindow(
                 GraphicsSettings.VideoMode, 
                 WindowProperties.Title,
-                WindowProperties.WindowStyle
+                WindowProperties.WindowStyle,
+                GraphicsSettings.ContextSettings
             );
             Window.SetActive(true);
 
