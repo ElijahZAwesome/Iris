@@ -5,14 +5,7 @@ namespace Iris.Graphics
     public class WindowProperties
     {
         private readonly Game _game;
-
-        private bool _canResize;
-        private bool _canClose = true;
-        private bool _hasTitleBar = true;
-        private bool _isFullScreen = false;
         private string _title = "Iris";
-
-        public bool UpdateImmediately { get; set; }
 
         public uint Width
         {
@@ -22,7 +15,7 @@ namespace Iris.Graphics
                     return 0;
 
                 return _game.Window.Size.X;
-            } 
+            }
         }
 
         public uint Height
@@ -36,54 +29,6 @@ namespace Iris.Graphics
             }
         }
 
-        public bool CanResize
-        {
-            get => _canResize;
-            set
-            {
-                _canResize = value;
-
-                if (UpdateImmediately)
-                    CommitChanges();
-            }
-        }
-
-        public bool CanClose
-        {
-            get => _canClose;
-            set
-            {
-                _canClose = value;
-
-                if (UpdateImmediately)
-                    CommitChanges();
-            }
-        }
-
-        public bool HasTitleBar
-        {
-            get => _hasTitleBar;
-            set
-            {
-                _hasTitleBar = value;
-
-                if (UpdateImmediately)
-                    CommitChanges();
-            }
-        }
-
-        public bool IsFullScreen
-        {
-            get => _isFullScreen;
-            set
-            {
-                _isFullScreen = value;
-
-                if (UpdateImmediately)
-                    CommitChanges();
-            }
-        }
-
         public string Title
         {
             get => _title;
@@ -93,6 +38,11 @@ namespace Iris.Graphics
                 _game.Window?.SetTitle(_title);
             }
         }
+
+        public bool CanResize { get; set; }
+        public bool CanClose { get; set; }
+        public bool HasTitleBar { get; set; }
+        public bool IsFullScreen { get; set; }
 
         internal Styles WindowStyle
         {
@@ -111,15 +61,9 @@ namespace Iris.Graphics
 
                 if (IsFullScreen)
                     styles |= Styles.Fullscreen;
-                
+
                 return styles;
             }
-        }
-
-        public void CommitChanges()
-        {
-            if (_game.Window != null)
-                _game.ResetWindow();
         }
 
         internal WindowProperties(Game game)

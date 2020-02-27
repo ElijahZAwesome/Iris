@@ -14,10 +14,12 @@ namespace Iris.TestApp
 
         protected override void Initialize()
         {
-            GraphicsSettings.BackBufferWidth = 1366;
-            GraphicsSettings.BackBufferHeight = 768;
+            GraphicsSettings.BackBufferWidth = 1920;
+            GraphicsSettings.BackBufferHeight = 1080;
+            GraphicsSettings.ColorDepth = 32;
             GraphicsSettings.EnableVerticalSync = true;
-
+            GraphicsSettings.CommitChanges();
+            WindowProperties.IsFullScreen = true;
             GraphicsSettings.CommitChanges();
         }
 
@@ -26,7 +28,14 @@ namespace Iris.TestApp
             _offbuf = new OffscreenBuffer(GraphicsSettings.BackBufferWidth, GraphicsSettings.BackBufferHeight);
 
             _shader = Content.Load<PixelShader>("shader.glsl");
-            _shader.Set("screenSize", new Vector2(GraphicsSettings.BackBufferWidth, GraphicsSettings.BackBufferHeight));
+            _shader.Set(
+                "screenSize", 
+                new Vector2(
+                    GraphicsSettings.BackBufferWidth, 
+                    GraphicsSettings.BackBufferHeight
+                )
+            );
+
             _shader.Set("scanlineDensity", 2f);
             _shader.Set("blurDistance", .375f);
 
