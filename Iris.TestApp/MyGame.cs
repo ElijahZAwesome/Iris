@@ -14,12 +14,14 @@ namespace Iris.TestApp
 
         protected override void Initialize()
         {
-            GraphicsSettings.BackBufferWidth = 1920;
-            GraphicsSettings.BackBufferHeight = 1080;
-            GraphicsSettings.ColorDepth = 32;
+            GraphicsSettings.BackBufferWidth = 1024;
+            GraphicsSettings.BackBufferHeight = 600;
+            GraphicsSettings.ColorDepth = 24;
             GraphicsSettings.EnableVerticalSync = true;
-            GraphicsSettings.CommitChanges();
-            WindowProperties.IsFullScreen = true;
+            WindowProperties.IsFullScreen = false;
+            WindowProperties.HasTitleBar = true;
+            WindowProperties.CanClose = true;
+
             GraphicsSettings.CommitChanges();
         }
 
