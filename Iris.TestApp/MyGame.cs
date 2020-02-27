@@ -18,9 +18,6 @@ namespace Iris.TestApp
             GraphicsSettings.BackBufferHeight = 600;
             GraphicsSettings.ColorDepth = 24;
             GraphicsSettings.EnableVerticalSync = true;
-            WindowProperties.IsFullScreen = false;
-            WindowProperties.HasTitleBar = true;
-            WindowProperties.CanClose = true;
 
             GraphicsSettings.CommitChanges();
         }
@@ -82,7 +79,7 @@ namespace Iris.TestApp
 
         protected override void Update(float deltaTime)
         {
-            WindowProperties.Title = $"FPS: {FpsCounter.FramesPerSecond:F2} | Delta {deltaTime:F6}";
+            WindowTitle = $"FPS: {FpsCounter.FramesPerSecond:F2} | Delta {deltaTime:F6}";
         }
     }
 }

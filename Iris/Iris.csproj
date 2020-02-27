@@ -16,14 +16,14 @@
     <EmbeddedResource Include="Binaries\Win64\csfml-system-2.dll" />
     <EmbeddedResource Include="Binaries\Win64\csfml-window-2.dll" />
   </ItemGroup>
-  
-  <ItemGroup>    
+
+  <ItemGroup>
     <PackageReference Include="Fody" Version="6.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>    
+    </PackageReference>
     <PackageReference Include="ModuleInit.Fody" Version="2.1.0" />
-    
+
     <PackageReference Include="SFML.Net" Version="2.5.0" />
   </ItemGroup>
 </Project>

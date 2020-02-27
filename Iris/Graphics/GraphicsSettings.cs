@@ -15,7 +15,7 @@ namespace Iris.Graphics
         private bool _useSrgbCapableFrameBuffer;
         private bool _enableVerticalSync;
         private bool _useOpenGlCoreProfile;
-        
+
         private OpenGlVersion _openGlVersion = OpenGlVersion.OpenGl30;
 
         public bool UpdateImmediately { get; set; }
@@ -128,6 +128,9 @@ namespace Iris.Graphics
             }
         }
 
+        public bool IsFullScreen { get; set; }
+        public bool IsBorderless { get; set; }
+
         public void CommitChanges()
         {
             if (_game.Window != null)
@@ -136,6 +139,22 @@ namespace Iris.Graphics
 
                 _game.Window.SetFramerateLimit(_framerateLimit);
                 _game.Window.SetVerticalSyncEnabled(_enableVerticalSync);
+            }
+        }
+
+        internal Styles WindowStyle
+        {
+            get
+            {
+                var style = (Styles)0;
+
+                if (!IsBorderless)
+                    style |= Styles.Close;
+
+                if (IsFullScreen)
+                    style |= Styles.Fullscreen;
+
+                return style;
             }
         }
 
@@ -148,7 +167,7 @@ namespace Iris.Graphics
 
         internal ContextSettings ContextSettings
             => new ContextSettings(
-                0, 0, 
+                0, 0,
                 AntialiasingLevel,
                 OpenGlVersion.Major,
                 OpenGlVersion.Minor,

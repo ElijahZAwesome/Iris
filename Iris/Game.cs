@@ -11,6 +11,8 @@ namespace Iris
 {
     public class Game : IDisposable
     {
+        private string _windowTitle;
+
         private RenderContext RenderContext { get; set; }
         private Clock DeltaClock { get; }
 
@@ -19,16 +21,23 @@ namespace Iris
         internal RenderWindow Window { get; private set; }
 
         public GraphicsSettings GraphicsSettings { get; }
-        public WindowProperties WindowProperties { get; }
-
         public FpsCounter FpsCounter { get; }
+
+        public string WindowTitle
+        {
+            get => _windowTitle;
+            set
+            {
+                _windowTitle = value;
+                Window?.SetTitle(_windowTitle);
+            }
+        }
 
         public bool Running { get; set; }
         public bool Disposed { get; private set; }
 
         protected Game()
         {
-            WindowProperties = new WindowProperties(this);
             GraphicsSettings = new GraphicsSettings(this);
 
             DeltaClock = new Clock();
@@ -127,10 +136,11 @@ namespace Iris
         {
             Window = new RenderWindow(
                 GraphicsSettings.VideoMode,
-                WindowProperties.Title,
-                WindowProperties.WindowStyle,
+                WindowTitle,
+                GraphicsSettings.WindowStyle,
                 GraphicsSettings.ContextSettings
             );
+
             Window.SetActive(true);
 
             ConnectWindowEvents();

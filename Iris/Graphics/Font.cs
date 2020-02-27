@@ -17,7 +17,7 @@ namespace Iris.Graphics
         public bool Italic { get; set; }
         public bool Underline { get; set; }
 
-        public float LineHeight => CharacterSize + SfmlFont.GetLineSpacing(CharacterSize);
+        public float LineHeight => CharacterSize + LineSpacing;
 
         internal Font(string filePath)
         {

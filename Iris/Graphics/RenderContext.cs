@@ -57,8 +57,7 @@ namespace Iris.Graphics
 
         public void Draw(OffscreenBuffer buffer)
         {
-            using var sprite = new SfmlSprite(buffer.RenderTexture.Texture);
-            Target.Draw(sprite, RenderStates);
+            Target.Draw(buffer.Sprite, RenderStates);
         }
 
         public void Draw(Spritesheet spritesheet, int cellIndex, Vector2 position, Vector2 scale, Color color)
