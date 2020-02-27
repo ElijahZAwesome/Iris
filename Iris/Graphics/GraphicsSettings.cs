@@ -28,7 +28,7 @@ namespace Iris.Graphics
                 _backBufferWidth = value;
 
                 if (UpdateImmediately)
-                    _game.ResetWindow();
+                    CommitChanges();
             }
         }
 
@@ -40,7 +40,7 @@ namespace Iris.Graphics
                 _backBufferHeight = value;
 
                 if (UpdateImmediately)
-                    _game.ResetWindow();
+                    CommitChanges();
             }
         }
 
