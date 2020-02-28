@@ -1,8 +1,9 @@
-﻿using SfmlColor = SFML.Graphics.Color;
+﻿using System;
+using SfmlColor = SFML.Graphics.Color;
 
 namespace Iris.Graphics
 {
-    public struct Color
+    public struct Color : IEquatable<Color>
     {
         public byte R;
         public byte G;
@@ -197,6 +198,21 @@ namespace Iris.Graphics
 
         internal SfmlColor ToSfmlColor()
             => new SfmlColor(R, G, B, A);
+
+        public override bool Equals(object obj)
+            => obj is Color color && Equals(color);
+
+        public override int GetHashCode()
+            => PackedValue.GetHashCode();
+
+        public bool Equals(Color other)
+        {
+            return R == other.R &&
+                   G == other.G &&
+                   B == other.B &&
+                   A == other.A &&
+                   PackedValue == other.PackedValue;
+        }
 
         public static bool operator ==(Color left, Color right)
             => left.R == right.R &&
