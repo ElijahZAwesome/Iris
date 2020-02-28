@@ -4,10 +4,10 @@ using SFML.System;
 
 namespace Iris
 {
-    public struct Vector2
+    public struct Vector2 : IEquatable<Vector2>
     {
-        public float X;
-        public float Y;
+        public readonly float X;
+        public readonly float Y;
 
         public static readonly Vector2 Up = new Vector2(0, -1);
         public static readonly Vector2 Down = new Vector2(0, 1);
@@ -25,26 +25,34 @@ namespace Iris
         }
 
         public float Magnitude
-        {
-            get
-            {
-                return (float)Math.Sqrt(
-                    Math.Pow(X, 2) +
-                    Math.Pow(Y, 2)
-                );
-            }
-        }
+            => (float)Math.Sqrt(
+                Math.Pow(X, 2) +
+                Math.Pow(Y, 2)
+            );
 
         public Vector2(float x, float y)
         {
             X = x;
             Y = y;
         }
+        
+        public float DistanceTo(Vector2 target)
+            => Distance(this, target);
+        
+        public bool Equals(Vector2 other)
+            => X.Equals(other.X) && 
+               Y.Equals(other.Y);
+        
+        public override bool Equals(object obj)
+            => obj is Vector2 other && Equals(other);
+
+        public override int GetHashCode()
+            => HashCode.Combine(X, Y);
 
         public static float Distance(Vector2 a, Vector2 b)
             => (a - b).Magnitude;
 
-        public static Vector2 operator*(Vector2 left, Vector2 right)
+        public static Vector2 operator *(Vector2 left, Vector2 right)
         {
             return new Vector2(
                 left.X * right.X,
@@ -52,7 +60,7 @@ namespace Iris
             );
         }
 
-        public static Vector2 operator+(Vector2 left, Vector2 right)
+        public static Vector2 operator +(Vector2 left, Vector2 right)
         {
             return new Vector2(
                 left.X + right.X,
@@ -60,7 +68,7 @@ namespace Iris
             );
         }
 
-        public static Vector2 operator-(Vector2 left, Vector2 right)
+        public static Vector2 operator -(Vector2 left, Vector2 right)
         {
             return new Vector2(
                 left.X - right.X,
@@ -68,11 +76,17 @@ namespace Iris
             );
         }
 
-        public static Vector2 operator*(Vector2 left, float right)
+        public static Vector2 operator *(Vector2 left, float right)
             => new Vector2(left.X * right, left.Y * right);
 
         public static Vector2 operator /(Vector2 left, float right)
             => new Vector2(left.X * right, left.Y * right);
+
+        public static bool operator ==(Vector2 left, Vector2 right)
+            => left.X.Equals(right.X) && left.Y.Equals(right.Y);
+
+        public static bool operator !=(Vector2 left, Vector2 right)
+            => !(left == right);
 
         internal Vector2f ToSfmlVector()
             => new Vector2f(X, Y);

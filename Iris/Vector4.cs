@@ -3,12 +3,12 @@ using System;
 
 namespace Iris
 {
-    public struct Vector4
+    public struct Vector4 : IEquatable<Vector4>
     {
-        public float X;
-        public float Y;
-        public float Z;
-        public float W;
+        public readonly float X;
+        public readonly float Y;
+        public readonly float Z;
+        public readonly float W;
 
         public Vector4 Normalized
         {
@@ -20,17 +20,12 @@ namespace Iris
         }
 
         public float Magnitude
-        {
-            get
-            {
-                return (float)Math.Sqrt(
-                    Math.Pow(X, 2) +
-                    Math.Pow(Y, 2) +
-                    Math.Pow(Z, 2) +
-                    Math.Pow(W, 2)
-                );
-            }
-        }
+            => (float)Math.Sqrt(
+                Math.Pow(X, 2) +
+                Math.Pow(Y, 2) +
+                Math.Pow(Z, 2) +
+                Math.Pow(W, 2)
+            );
 
         public Vector4(float x, float y, float z, float w)
         {
@@ -39,6 +34,24 @@ namespace Iris
             Z = z;
             W = w;
         }
+
+        public float DistanceTo(Vector4 target)
+            => Distance(this, target);
+        
+        public bool Equals(Vector4 other)
+            => X.Equals(other.X) &&
+               Y.Equals(other.Y) &&
+               Z.Equals(other.Z) &&
+               W.Equals(other.W);
+
+        public override bool Equals(object obj)
+            => obj is Vector4 other && Equals(other);
+
+        public override int GetHashCode()
+            => HashCode.Combine(X, Y, Z, W);
+
+        public static float Distance(Vector4 a, Vector4 b)
+            => (a - b).Magnitude;
 
         public static Vector4 operator *(Vector4 left, Vector4 right)
         {
@@ -75,6 +88,15 @@ namespace Iris
 
         public static Vector4 operator /(Vector4 left, float right)
             => new Vector4(left.X / right, left.Y / right, left.Z / right, left.W / right);
+
+        public static bool operator ==(Vector4 left, Vector4 right)
+            => left.X.Equals(right.X) &&
+               left.Y.Equals(right.Y) &&
+               left.Z.Equals(right.Z) &&
+               left.W.Equals(right.W);
+
+        public static bool operator !=(Vector4 left, Vector4 right)
+            => !(left == right);
 
         internal Vec4 ToGlslVector()
             => new Vec4(X, Y, Z, W);
