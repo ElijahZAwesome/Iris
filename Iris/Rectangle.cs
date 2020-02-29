@@ -17,7 +17,7 @@ namespace Iris
             Height = height;
         }
 
-        public bool Intersect(Rectangle other)
+        public bool Intersects(Rectangle other)
         {
             return Left + Width >= other.Left &&
                    Left <= other.Left + other.Width &&
