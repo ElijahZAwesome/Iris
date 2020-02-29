@@ -9,6 +9,8 @@ namespace Iris
         public readonly float Y;
         public readonly float Z;
         public readonly float W;
+        
+        public static readonly Vector4 Zero = new Vector4(0, 0, 0, 0);
 
         public Vector4 Normalized
         {
