@@ -6,32 +6,23 @@ using Iris.Input;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
+using Mouse = Iris.Input.Mouse;
+using Window = Iris.Graphics.Window;
 
 namespace Iris
 {
     public class Game : IDisposable
     {
-        private string _windowTitle;
-
         private RenderContext RenderContext { get; set; }
         private Clock DeltaClock { get; }
 
         protected ContentManager Content { get; }
 
-        internal RenderWindow Window { get; private set; }
+        internal RenderWindow RenderWindow { get; private set; }
 
+        public Window Window { get; }
         public GraphicsSettings GraphicsSettings { get; }
         public FpsCounter FpsCounter { get; }
-
-        public string WindowTitle
-        {
-            get => _windowTitle;
-            set
-            {
-                _windowTitle = value;
-                Window?.SetTitle(_windowTitle);
-            }
-        }
 
         public bool Running { get; set; }
         public bool Disposed { get; private set; }
@@ -44,9 +35,11 @@ namespace Iris
             FpsCounter = new FpsCounter();
             Content = new ContentManager();
 
+            Window = new Window(this);
+            Mouse.SetActiveGame(this);
+
             ResetWindow();
             Initialize();
-
             LoadContent();
         }
 
@@ -62,39 +55,39 @@ namespace Iris
             var delta = 0f;
             while (Running)
             {
-                if (Window == null)
+                if (RenderWindow == null)
                     continue;
 
-                Window.DispatchEvents();
+                RenderWindow.DispatchEvents();
 
                 Update(delta);
                 Draw(RenderContext);
 
-                Window.Display();
+                RenderWindow.Display();
                 FpsCounter.Update();
 
                 delta = DeltaClock.ElapsedTime.AsSeconds();
                 DeltaClock.Restart();
             }
 
-            Window?.Close();
+            RenderWindow?.Close();
             Exiting();
         }
 
         public void Dispose()
         {
-            Window.Dispose();
+            RenderWindow.Dispose();
             Disposed = true;
         }
 
         internal void ResetWindow()
         {
-            if (Window != null)
+            if (RenderWindow != null)
             {
                 DisconnectWindowEvents();
 
-                Window.Close();
-                Window.Dispose();
+                RenderWindow.Close();
+                RenderWindow.Dispose();
             }
 
             InitializeRenderingSystem();
@@ -128,37 +121,66 @@ namespace Iris
         {
         }
 
+        protected virtual void MouseMoved(Vector2 position)
+        {
+        }
+
+        protected virtual void MousePressed(Vector2 position, int button)
+        {
+        }
+
+        protected virtual void MouseReleased(Vector2 position, int button)
+        {
+        }
+
+        protected virtual void MouseWheelScrolled(Vector2 movement, float delta, MouseWheel wheel)
+        {
+        }
+
         protected virtual void Exiting()
         {
         }
 
         private void InitializeRenderingSystem()
         {
-            Window = new RenderWindow(
+            RenderWindow = new RenderWindow(
                 GraphicsSettings.VideoMode,
-                WindowTitle,
+                Window.Title,
                 GraphicsSettings.WindowStyle,
                 GraphicsSettings.ContextSettings
             );
 
-            Window.SetActive(true);
+            RenderWindow.SetMouseCursorGrabbed(Window.CaptureCursor);
+            RenderWindow.SetMouseCursorVisible(Window.ShowCursor);
+
+            RenderWindow.SetActive(true);
 
             ConnectWindowEvents();
-            RenderContext = new RenderContext(Window);
+            RenderContext = new RenderContext(RenderWindow);
         }
 
         private void ConnectWindowEvents()
         {
-            Window.Closed += Window_Closed;
-            Window.KeyPressed += Window_KeyPressed;
-            Window.KeyReleased += Window_KeyReleased;
-            Window.TextEntered += Window_TextEntered;
+            RenderWindow.Closed += Window_Closed;
+            RenderWindow.MouseMoved += Window_MouseMoved;
+            RenderWindow.MouseButtonPressed += Window_MouseButtonPressed;
+            RenderWindow.MouseButtonReleased += Window_MouseButtonReleased;
+            RenderWindow.MouseWheelScrolled += Window_MouseWheelScrolled;
+            RenderWindow.KeyPressed += Window_KeyPressed;
+            RenderWindow.KeyReleased += Window_KeyReleased;
+            RenderWindow.TextEntered += Window_TextEntered;
         }
 
         private void DisconnectWindowEvents()
         {
-            Window.Closed -= Window_Closed;
-            Window.TextEntered -= Window_TextEntered;
+            RenderWindow.Closed -= Window_Closed;
+            RenderWindow.MouseMoved -= Window_MouseMoved;
+            RenderWindow.MouseButtonPressed -= Window_MouseButtonPressed;
+            RenderWindow.MouseButtonReleased -= Window_MouseButtonReleased;
+            RenderWindow.MouseWheelScrolled -= Window_MouseWheelScrolled;
+            RenderWindow.KeyPressed -= Window_KeyPressed;
+            RenderWindow.KeyReleased -= Window_KeyReleased;
+            RenderWindow.TextEntered -= Window_TextEntered;
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -173,6 +195,7 @@ namespace Iris
 
         private void Window_KeyReleased(object sender, KeyEventArgs e)
         {
+            var keyCode = (KeyCode)e.Code;
             var modifiers = KeyModifiers.None;
 
             if (e.Control) modifiers |= KeyModifiers.Ctrl;
@@ -180,11 +203,12 @@ namespace Iris
             if (e.System) modifiers |= KeyModifiers.System;
             if (e.Shift) modifiers |= KeyModifiers.Shift;
 
-            KeyReleased((KeyCode)e.Code, modifiers);
+            KeyReleased(keyCode, modifiers);
         }
 
         private void Window_KeyPressed(object sender, KeyEventArgs e)
         {
+            var keyCode = (KeyCode)e.Code;
             var modifiers = KeyModifiers.None;
 
             if (e.Control) modifiers |= KeyModifiers.Ctrl;
@@ -192,7 +216,39 @@ namespace Iris
             if (e.System) modifiers |= KeyModifiers.System;
             if (e.Shift) modifiers |= KeyModifiers.Shift;
 
-            KeyPressed((KeyCode)e.Code, modifiers);
+            KeyPressed(keyCode, modifiers);
+        }
+
+        private void Window_MouseMoved(object sender, MouseMoveEventArgs e)
+        {
+            MouseMoved(
+                new Vector2(e.X, e.Y)
+            );
+        }
+
+        private void Window_MouseButtonPressed(object sender, MouseButtonEventArgs e)
+        {
+            MousePressed(
+                new Vector2(e.X, e.Y),
+                (int)e.Button
+            );
+        }
+
+        private void Window_MouseButtonReleased(object sender, MouseButtonEventArgs e)
+        {
+            MouseReleased(
+                new Vector2(e.X, e.Y),
+                (int)e.Button
+            );
+        }
+
+        private void Window_MouseWheelScrolled(object sender, MouseWheelScrollEventArgs e)
+        {
+            MouseWheelScrolled(
+                new Vector2(e.X, e.Y),
+                e.Delta,
+                (MouseWheel)e.Wheel
+            );
         }
     }
 }

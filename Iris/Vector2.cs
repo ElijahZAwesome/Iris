@@ -91,6 +91,9 @@ namespace Iris
         internal Vector2f ToSfmlVector()
             => new Vector2f(X, Y);
 
+        internal Vector2i ToSfmlIntVector()
+            => new Vector2i((int)X, (int)Y);
+
         internal Vec2 ToGlslVector()
             => new Vec2(X, Y);
     }

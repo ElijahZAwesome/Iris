@@ -133,12 +133,12 @@ namespace Iris.Graphics
 
         public void CommitChanges()
         {
-            if (_game.Window != null)
+            if (_game.RenderWindow != null)
             {
                 _game.ResetWindow();
 
-                _game.Window.SetFramerateLimit(_framerateLimit);
-                _game.Window.SetVerticalSyncEnabled(_enableVerticalSync);
+                _game.RenderWindow.SetFramerateLimit(_framerateLimit);
+                _game.RenderWindow.SetVerticalSyncEnabled(_enableVerticalSync);
             }
         }
 
