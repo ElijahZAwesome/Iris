@@ -10,7 +10,7 @@ namespace Iris.Graphics
 
         public uint CharacterSize { get; set; } = 12;
         public float CharacterSpacing { get; set; } = 1;
-        public float LineSpacing { get; set; }
+        public float LineSpacing { get; set; } = 1;
         public uint OutlineThickness { get; set; }
 
         public bool Bold { get; set; }
