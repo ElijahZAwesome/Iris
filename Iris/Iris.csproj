@@ -2,6 +2,20 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PublishSingleFile>true</PublishSingleFile>
+    <PublishTrimmed>true</PublishTrimmed>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Product>Iris 2D Game Framework</Product>
+    <Authors>Ciastex</Authors>
+    <Description>Simple, cross-platform 2D game framework for .NET Core without bullshit.</Description>
+    <Copyright>Copyright 20XX © Tomasz Cichoń</Copyright>
+    <Version>0.1.0-alpha</Version>
+    
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>2D, SFML, Game Engine, Engine, Framework, Game Framework</PackageTags>
   </PropertyGroup>
   
   <ItemGroup>
@@ -22,7 +36,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ModuleInit.Fody" Version="2.1.0" />
+    <PackageReference Include="ModuleInit.Fody" Version="2.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
 
     <PackageReference Include="SFML.Net" Version="2.5.0" />
   </ItemGroup>

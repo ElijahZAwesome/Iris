@@ -79,7 +79,7 @@ namespace Iris.TestApp
 
         protected override void Update(float deltaTime)
         {
-            WindowTitle = $"FPS: {FpsCounter.FramesPerSecond:F2} | Delta {deltaTime:F6}";
+            // Window.Title = $"FPS: {FpsCounter.FramesPerSecond:F2} | Delta {deltaTime:F6}";
         }
     }
 }

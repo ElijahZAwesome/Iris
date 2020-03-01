@@ -9,7 +9,7 @@ namespace Iris.Graphics
         internal SfmlFont SfmlFont { get; }
 
         public uint CharacterSize { get; set; } = 12;
-        public float CharacterSpacing { get; set; }
+        public float CharacterSpacing { get; set; } = 1;
         public float LineSpacing { get; set; }
         public uint OutlineThickness { get; set; }
 
