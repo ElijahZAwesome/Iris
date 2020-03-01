@@ -42,11 +42,6 @@ namespace Iris.Graphics
             CellHeight = 0;
         }
 
-        public void Draw(RenderContext renderContext, int cellIndex, Vector2 position, Vector2 scale, Color color)
-        {
-            renderContext.Draw(this, cellIndex, position, scale, color);
-        }
-
         public Vector2 GetGranularXY(int cellIndex)
             => new Vector2(
                 Cells[cellIndex].Left / _cellWidth,

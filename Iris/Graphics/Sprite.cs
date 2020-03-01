@@ -1,12 +1,12 @@
 ﻿using Iris.Internal;
-using SFML.Graphics;
+using SfmlTexture = SFML.Graphics.Texture;
 using SfmlSprite = SFML.Graphics.Sprite;
 
 namespace Iris.Graphics
 {
     public class Sprite
     {
-        internal Texture RenderTexture { get; set; }
+        internal SfmlTexture SfmlTexture { get; set; }
         internal SfmlSprite SfmlSprite { get; set; }
 
         public Vector2 Position
@@ -33,8 +33,8 @@ namespace Iris.Graphics
             set => SfmlSprite.Rotation = value;
         }
         
-        public float Width => RenderTexture.Size.X;
-        public float Height => RenderTexture.Size.Y;
+        public float Width => SfmlTexture.Size.X;
+        public float Height => SfmlTexture.Size.Y;
 
         public float ActualWidth => Width * Scale.X;
         public float ActualHeight => Height * Scale.Y;
@@ -45,17 +45,26 @@ namespace Iris.Graphics
             set => SfmlSprite.TextureRect = value.ToSfmlIntRect();
         }
 
+        public Texture Texture { get; set; }
         public Color Color { get; set; } = Color.White;
 
         internal Sprite(string filePath)
         {
-            RenderTexture = new Texture(filePath);
-            SfmlSprite = new SfmlSprite(RenderTexture);
+            Texture = new Texture(filePath);
+
+            SfmlTexture = new SfmlTexture(Texture.SfmlImage);
+            SfmlSprite = new SfmlSprite(SfmlTexture);
         }
 
-        public virtual void Draw(RenderContext renderContext)
+        public Sprite(Texture texture)
         {
-            renderContext.Draw(this);
+            Texture = texture;
+
+            SfmlTexture = new SfmlTexture(Texture.SfmlImage);
+            SfmlSprite = new SfmlSprite(SfmlTexture);
         }
+
+        public void UpdateTexture()
+            => SfmlTexture?.Update(Texture.SfmlImage);
     }
 }

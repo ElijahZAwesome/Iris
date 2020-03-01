@@ -1,16 +1,16 @@
 using Iris.Graphics;
 using Iris.Input;
+using System;
 
 namespace Iris.TestApp
 {
     public class MyGame : Game
     {
-        private OffscreenBuffer _offbuf;
-        private PixelShader _shader;
-        private Spritesheet _spritesheet;
-        private Font _font;
+        private Texture _texture;
+        private Sprite _sprite;
 
-        private string _text;
+        private float _x;
+        private float _y;
 
         protected override void Initialize()
         {
@@ -20,66 +20,59 @@ namespace Iris.TestApp
             GraphicsSettings.EnableVerticalSync = true;
 
             GraphicsSettings.CommitChanges();
+            MathF.SimplexSeed(12523187562);
         }
 
         protected override void LoadContent()
         {
-            _offbuf = new OffscreenBuffer(GraphicsSettings.BackBufferWidth, GraphicsSettings.BackBufferHeight);
-
-            _shader = Content.Load<PixelShader>("shader.glsl");
-            _shader.Set(
-                "screenSize", 
-                new Vector2(
-                    GraphicsSettings.BackBufferWidth, 
-                    GraphicsSettings.BackBufferHeight
-                )
-            );
-
-            _shader.Set("scanlineDensity", 2f);
-            _shader.Set("blurDistance", .375f);
-
-            _spritesheet = Content.Load<Spritesheet>("terrain.png");
-            _spritesheet.CellHeight = 16;
-            _spritesheet.CellWidth = 16;
-
-            _font = Content.Load<Font>("c64style.ttf");
-            _font.CharacterSize = 16;
+            _texture = new Texture(GraphicsSettings.BackBufferWidth / 8, GraphicsSettings.BackBufferHeight / 8);
+            _sprite = new Sprite(_texture)
+            {
+                Scale = new Vector2(8.0f, 8.0f)
+            };
         }
 
         protected override void Draw(RenderContext context)
         {
-            context.UseOffscreenBuffer(_offbuf);
             context.Clear(Color.CornflowerBlue);
-
-            /*for (var i = 0; i < _spritesheet.CellCount; i++)
-            {
-                context.Draw(_spritesheet, i, _spritesheet.GetGranularXY(i) * _x, new Vector2(4, 4), Color.White);
-            }*/
-
-            context.DrawString(_font, _text, new Vector2(64, 64), .0f, Color.Black);
-
-            context.UseOffscreenBuffer(null);
-
-            context.UsePixelShader(_shader);
-            context.Draw(_offbuf);
-            context.UsePixelShader(null);
+            context.Draw(_sprite);
         }
 
         protected override void KeyPressed(KeyCode keyCode, KeyModifiers modifiers)
         {
-            if (keyCode == KeyCode.Enter)
-                _text += "\n";
-        }
-
-        protected override void TextInput(char character)
-        {
-            if(char.IsLetterOrDigit(character) || char.IsSymbol(character) || char.IsPunctuation(character))
-                _text += character;
+            _sprite.UpdateTexture();
         }
 
         protected override void Update(float deltaTime)
         {
-            // Window.Title = $"FPS: {FpsCounter.FramesPerSecond:F2} | Delta {deltaTime:F6}";
+            if (Keyboard.IsKeyDown(KeyCode.Right))
+                _x += 1 * deltaTime;
+            else if (Keyboard.IsKeyDown(KeyCode.Left))
+                _x -= 1 * deltaTime;
+            else if (Keyboard.IsKeyDown(KeyCode.Up))
+                _y -= 1 * deltaTime;
+            else if (Keyboard.IsKeyDown(KeyCode.Down))
+                _y += 1 * deltaTime;
+
+            for (var x = 0; x < _texture.Width; x++)
+            {
+                for (var y = 0; y < _texture.Height; y++)
+                {
+                    var noise = (float)Math.Abs(MathF.SimplexNoise(_x + x, _y + y));
+                    noise = MathF.Clamp(noise, 0f, 1f);
+
+                    _sprite.Texture.SetPixel(
+                        (uint)x,
+                        (uint)y,
+                        new Color(
+                            (byte)(255 * noise),
+                            (byte)(255 * noise),
+                            (byte)(255 * noise),
+                            255
+                        )
+                    );
+                }
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Iris.Graphics
         public byte G;
         public byte B;
         public byte A;
-        
+
         public uint PackedValue
         {
             get
@@ -196,9 +196,6 @@ namespace Iris.Graphics
         public static readonly Color Yellow = new Color(255, 255, 0);
         public static readonly Color YellowGreen = new Color(154, 205, 50);
 
-        internal SfmlColor ToSfmlColor()
-            => new SfmlColor(R, G, B, A);
-
         public override bool Equals(object obj)
             => obj is Color color && Equals(color);
 
@@ -224,6 +221,9 @@ namespace Iris.Graphics
             => !(left == right);
 
         public static implicit operator SfmlColor(Color color)
-            => color.ToSfmlColor(); 
+            => new SfmlColor(color.R, color.G, color.B, color.A);
+
+        public static implicit operator Color(SfmlColor color)
+            => new Color(color.R, color.G, color.B, color.A);
     }
 }

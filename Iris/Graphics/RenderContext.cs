@@ -1,7 +1,6 @@
 using Iris.Internal;
 using SFML.Graphics;
 using SFML.System;
-using SfmlSprite = SFML.Graphics.Sprite;
 
 namespace Iris.Graphics
 {
