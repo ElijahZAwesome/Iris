@@ -17,6 +17,7 @@ namespace Iris.Graphics
         public bool Bold { get; set; }
         public bool Italic { get; set; }
         public bool Underline { get; set; }
+        public bool Strikethrough { get; set; }
 
         public float LineHeight => CharacterSize + LineSpacing;
 
@@ -42,6 +43,11 @@ namespace Iris.Graphics
             if (Italic)
                 MeasureContainer.Style |= SfmlText.Styles.Italic;
 
+            if (Underline)
+                MeasureContainer.Style |= SfmlText.Styles.Underlined;
+
+            if (Strikethrough)
+                MeasureContainer.Style |= SfmlText.Styles.StrikeThrough;
 
             var rect = MeasureContainer.GetLocalBounds()
                                        .ToIrisRectangle();
@@ -55,6 +61,7 @@ namespace Iris.Graphics
             {
                 LetterSpacing = CharacterSpacing,
                 LineSpacing = LineSpacing,
+                OutlineThickness = OutlineThickness
             };
 
             if (Bold)
@@ -62,6 +69,12 @@ namespace Iris.Graphics
 
             if (Italic)
                 txt.Style |= SfmlText.Styles.Italic;
+
+            if (Underline)
+                txt.Style |= SfmlText.Styles.Underlined;
+
+            if (Strikethrough)
+                txt.Style |= SfmlText.Styles.StrikeThrough;
 
             return txt;
         }
