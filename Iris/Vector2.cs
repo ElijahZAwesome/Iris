@@ -88,13 +88,13 @@ namespace Iris
         public static bool operator !=(Vector2 left, Vector2 right)
             => !(left == right);
 
-        internal Vector2f ToSfmlVector()
-            => new Vector2f(X, Y);
+        public static implicit operator Vector2f(Vector2 vector)
+            => new Vector2f(vector.X, vector.Y);
 
-        internal Vector2i ToSfmlIntVector()
-            => new Vector2i((int)X, (int)Y);
+        public static implicit operator Vector2i(Vector2 vector)
+            => new Vector2i((int)vector.X, (int)vector.Y);
 
-        internal Vec2 ToGlslVector()
-            => new Vec2(X, Y);
+        public static implicit operator Vec2(Vector2 vector)
+            => new Vec2(vector.X, vector.Y);
     }
 }

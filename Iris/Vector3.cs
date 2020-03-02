@@ -99,10 +99,10 @@ namespace Iris
         public static bool operator !=(Vector3 left, Vector3 right) 
             => !(left == right);
 
-        internal Vector3f ToSfmlVector()
-            => new Vector3f(X, Y, Z);
+        public static implicit operator Vector3f(Vector3 vector)
+            => new Vector3f(vector.X, vector.Y, vector.Z);
 
-        internal Vec3 ToGlslVector()
-            => new Vec3(X, Y, Z);
+        public static implicit operator Vec3(Vector3 vector)
+            => new Vec3(vector.X, vector.Y, vector.Z);
     }
 }

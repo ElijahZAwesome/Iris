@@ -18,13 +18,13 @@ namespace Iris.Graphics
         }
 
         public void Set(string name, Vector2 value)
-            => SfmlShader.SetUniform(name, value.ToGlslVector());
+            => SfmlShader.SetUniform(name, value);
 
         public void Set(string name, Vector3 value)
-            => SfmlShader.SetUniform(name, value.ToGlslVector());
+            => SfmlShader.SetUniform(name, value);
 
         public void Set(string name, Vector4 value)
-            => SfmlShader.SetUniform(name, value.ToGlslVector());
+            => SfmlShader.SetUniform(name, value);
 
         public void Set(string name, Color value)
             => Set(name, value.ToVector4());

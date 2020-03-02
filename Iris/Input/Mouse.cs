@@ -17,9 +17,9 @@ namespace Iris.Input
         public static void SetPosition(Vector2 position, bool absolute = false)
         {
             if (absolute)
-                SfmlMouse.SetPosition(position.ToSfmlIntVector());
+                SfmlMouse.SetPosition(position);
             else
-                SfmlMouse.SetPosition(position.ToSfmlIntVector(), _game.RenderWindow);
+                SfmlMouse.SetPosition(position, _game.RenderWindow);
         }
 
         public static bool IsButtonDown(int button)

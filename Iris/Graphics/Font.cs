@@ -7,6 +7,7 @@ namespace Iris.Graphics
     public class Font
     {
         internal SfmlFont SfmlFont { get; }
+        internal SfmlText MeasureContainer { get; }
 
         public uint CharacterSize { get; set; } = 12;
         public float CharacterSpacing { get; set; } = 1;
@@ -22,13 +23,28 @@ namespace Iris.Graphics
         internal Font(string filePath)
         {
             SfmlFont = new SfmlFont(filePath);
+            MeasureContainer = new SfmlText();
         }
 
         public Vector2 Measure(string text)
         {
-            var rect = ConstructText(text)
-                        .GetLocalBounds()
-                        .ToIrisRectangle();
+            MeasureContainer.Font = SfmlFont;
+            MeasureContainer.DisplayedString = text;
+            MeasureContainer.CharacterSize = CharacterSize;
+            MeasureContainer.LetterSpacing = CharacterSpacing;
+            MeasureContainer.LineSpacing = LineSpacing;
+            MeasureContainer.OutlineThickness = OutlineThickness;
+            MeasureContainer.Style = SfmlText.Styles.Regular;
+
+            if (Bold)
+                MeasureContainer.Style |= SfmlText.Styles.Bold;
+
+            if (Italic)
+                MeasureContainer.Style |= SfmlText.Styles.Italic;
+
+
+            var rect = MeasureContainer.GetLocalBounds()
+                                       .ToIrisRectangle();
 
             return new Vector2(rect.Width, rect.Height);
         }

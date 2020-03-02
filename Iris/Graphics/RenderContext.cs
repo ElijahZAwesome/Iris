@@ -1,6 +1,5 @@
 using Iris.Internal;
 using SFML.Graphics;
-using SFML.System;
 
 namespace Iris.Graphics
 {
@@ -24,8 +23,8 @@ namespace Iris.Graphics
         {
             using var rectShape = new RectangleShape
             {
-                Position = new Vector2f(x, y),
-                Size = new Vector2f(width, height),
+                Position = new Vector2(x, y),
+                Size = new Vector2(width, height),
                 OutlineColor = color,
                 OutlineThickness = thickness,
                 FillColor = Color.Transparent
@@ -38,8 +37,8 @@ namespace Iris.Graphics
         {
             using var rectShape = new RectangleShape
             {
-                Position = new Vector2f(x, y),
-                Size = new Vector2f(width, height),
+                Position = new Vector2(x, y),
+                Size = new Vector2(width, height),
                 FillColor = color,
                 OutlineColor = Color.Transparent,
                 OutlineThickness = 0
@@ -70,8 +69,9 @@ namespace Iris.Graphics
             using var text = font.ConstructText(str);
 
             text.FillColor = color;
-            text.Position = position.ToSfmlVector();
+            text.Position = position;
             text.Rotation = rotation;
+
             Target.Draw(text, RenderStates);
         }
 

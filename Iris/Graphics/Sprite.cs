@@ -12,19 +12,19 @@ namespace Iris.Graphics
         public Vector2 Position
         {
             get => SfmlSprite.Position.ToIrisVector();
-            set => SfmlSprite.Position = value.ToSfmlVector();
+            set => SfmlSprite.Position = value;
         }
 
         public Vector2 Origin
         {
             get => SfmlSprite.Origin.ToIrisVector();
-            set => SfmlSprite.Origin = value.ToSfmlVector();
+            set => SfmlSprite.Origin = value;
         }
 
         public Vector2 Scale
         {
             get => SfmlSprite.Scale.ToIrisVector();
-            set => SfmlSprite.Scale = value.ToSfmlVector();
+            set => SfmlSprite.Scale = value;
         }
 
         public float Rotation

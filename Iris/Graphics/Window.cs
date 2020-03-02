@@ -23,7 +23,7 @@ namespace Iris.Graphics
         public Vector2 Position
         {
             get => _game.RenderWindow.Position.ToIrisVector();
-            set => _game.RenderWindow.Position = value.ToSfmlIntVector();
+            set => _game.RenderWindow.Position = value;
         }
 
         public Vector2 Dimensions

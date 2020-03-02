@@ -100,7 +100,7 @@ namespace Iris
         public static bool operator !=(Vector4 left, Vector4 right)
             => !(left == right);
 
-        internal Vec4 ToGlslVector()
-            => new Vec4(X, Y, Z, W);
+        public static implicit operator Vec4(Vector4 vector)
+            => new Vec4(vector.X, vector.Y, vector.Z, vector.W);
     }
 }

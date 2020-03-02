@@ -16,7 +16,7 @@ namespace Iris.Internal
             Color = color;
             Thickness = thickness;
         }
-         
+
         public void Draw(RenderTarget target, RenderStates states)
         {
             var normalizedDirection = (B - A).Normalized;
@@ -24,10 +24,10 @@ namespace Iris.Internal
             var offset = perpendicular * (Thickness * 2f);
 
             var verts = new Vertex[4];
-            verts[0] = new Vertex((A + offset).ToSfmlVector(), Color);
-            verts[1] = new Vertex((B + offset).ToSfmlVector(), Color);
-            verts[2] = new Vertex((B - offset).ToSfmlVector(), Color);
-            verts[3] = new Vertex((A - offset).ToSfmlVector(), Color);
+            verts[0] = new Vertex(A + offset, Color);
+            verts[1] = new Vertex(B + offset, Color);
+            verts[2] = new Vertex(B - offset, Color);
+            verts[3] = new Vertex(A - offset, Color);
 
             target.Draw(verts, PrimitiveType.Quads);
         }
