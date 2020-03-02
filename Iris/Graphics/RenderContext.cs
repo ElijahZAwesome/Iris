@@ -66,13 +66,14 @@ namespace Iris.Graphics
 
         public void DrawString(Font font, string str, Vector2 position, float rotation, Color color)
         {
-            using var text = font.ConstructText(str);
+            var text = font.ConstructText(str);
 
             text.FillColor = color;
             text.Position = position;
             text.Rotation = rotation;
 
             Target.Draw(text, RenderStates);
+            text.Dispose();
         }
 
         public void DrawString(Font font, string str, Vector2 position, Color color)
