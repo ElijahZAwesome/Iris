@@ -33,7 +33,7 @@ namespace Iris.Graphics
 
         public int CellCount => Cells.Count;
 
-        internal Spritesheet(string filePath)
+        public Spritesheet(string filePath)
         {
             Cells = new List<Rectangle>();
             Sprite = new Sprite(filePath);

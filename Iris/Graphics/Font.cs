@@ -21,7 +21,7 @@ namespace Iris.Graphics
 
         public float LineHeight => CharacterSize + LineSpacing;
 
-        internal Font(string filePath)
+        public Font(string filePath)
         {
             SfmlFont = new SfmlFont(filePath);
             MeasureContainer = new SfmlText();
