@@ -76,7 +76,9 @@ namespace Iris
 
         public void Dispose()
         {
+            DisconnectWindowEvents();
             RenderWindow.Dispose();
+            
             Disposed = true;
         }
 
@@ -137,6 +139,18 @@ namespace Iris
         {
         }
 
+        protected virtual void TouchStarted(Vector2 position, uint finger)
+        {
+        }
+
+        protected virtual void TouchEnded(Vector2 position, uint finger)
+        {
+        }
+
+        protected virtual void TouchMoved(Vector2 position, uint finger)
+        {
+        }
+        
         protected virtual void Exiting()
         {
         }
@@ -169,6 +183,9 @@ namespace Iris
             RenderWindow.KeyPressed += Window_KeyPressed;
             RenderWindow.KeyReleased += Window_KeyReleased;
             RenderWindow.TextEntered += Window_TextEntered;
+            RenderWindow.TouchBegan += Window_TouchBegan;
+            RenderWindow.TouchEnded += Window_TouchEnded;
+            RenderWindow.TouchMoved += Window_TouchMoved;
         }
 
         private void DisconnectWindowEvents()
@@ -181,6 +198,9 @@ namespace Iris
             RenderWindow.KeyPressed -= Window_KeyPressed;
             RenderWindow.KeyReleased -= Window_KeyReleased;
             RenderWindow.TextEntered -= Window_TextEntered;
+            RenderWindow.TouchBegan -= Window_TouchBegan;
+            RenderWindow.TouchEnded -= Window_TouchEnded;
+            RenderWindow.TouchMoved -= Window_TouchMoved;
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -248,6 +268,30 @@ namespace Iris
                 new Vector2(e.X, e.Y),
                 e.Delta,
                 (MouseWheel)e.Wheel
+            );
+        }
+        
+        private void Window_TouchBegan(object sender, TouchEventArgs e)
+        {
+            TouchStarted(
+                new Vector2(e.X, e.Y), 
+                e.Finger
+            );
+        }
+        
+        private void Window_TouchMoved(object sender, TouchEventArgs e)
+        {
+            TouchMoved(
+                new Vector2(e.X, e.Y), 
+                e.Finger
+            );
+        }
+
+        private void Window_TouchEnded(object sender, TouchEventArgs e)
+        {
+            TouchEnded(
+                new Vector2(e.X, e.Y), 
+                e.Finger
             );
         }
     }
