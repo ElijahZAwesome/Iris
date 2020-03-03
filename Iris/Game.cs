@@ -34,7 +34,7 @@ namespace Iris
 
             DeltaClock = new Clock();
             FpsCounter = new FpsCounter();
-            Content = new ContentManager();
+            Content = new FileSystemContentProvider();
 
             Window = new Window(this);
 

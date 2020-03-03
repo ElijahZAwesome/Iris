@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Iris.Content
 {
-    public class ContentManager : IContentProvider
+    public class FileSystemContentProvider : IContentProvider
     {
-        public ContentManager(Dictionary<Type, ContentImporter> importers, string contentRoot)
+        public FileSystemContentProvider(Dictionary<Type, ContentImporter> importers, string contentRoot)
         {
             Importers = importers;
             ContentRoot = contentRoot;
@@ -21,7 +21,7 @@ namespace Iris.Content
 
         public string ContentRoot { get; }
 
-        public ContentManager(string contentRoot)
+        public FileSystemContentProvider(string contentRoot)
         {
             ContentRoot = contentRoot;
             Importers = new Dictionary<Type, ContentImporter>();
@@ -29,7 +29,7 @@ namespace Iris.Content
             RegisterBuiltinImporters();
         }
 
-        internal ContentManager()
+        internal FileSystemContentProvider()
             : this(
                 Path.Combine(
                     Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
