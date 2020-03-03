@@ -5,11 +5,18 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Iris.Content
 {
-    public class ContentManager
+    public class ContentManager : IContentProvider
     {
+        public ContentManager(Dictionary<Type, ContentImporter> importers, string contentRoot)
+        {
+            Importers = importers;
+            ContentRoot = contentRoot;
+        }
+
         internal Dictionary<Type, ContentImporter> Importers { get; }
 
         public string ContentRoot { get; }
@@ -24,18 +31,20 @@ namespace Iris.Content
 
         internal ContentManager()
             : this(
-                 Path.Combine(
-                     Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                     "Content"
-                 )
-             )
-        { }
+                Path.Combine(
+                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    "Content"
+                )
+            )
+        {
+        }
 
-        public Stream GetRawContentFileStream(string path, FileMode fileMode = FileMode.Open, FileAccess fileAccess = FileAccess.Read)
+        public Stream GetRawContentFileStream(string path, FileMode fileMode = FileMode.Open,
+            FileAccess fileAccess = FileAccess.Read)
         {
             return new FileStream(
-                Path.Combine(ContentRoot, path), 
-                fileMode, 
+                Path.Combine(ContentRoot, path),
+                fileMode,
                 fileAccess
             );
         }
@@ -59,6 +68,25 @@ namespace Iris.Content
 
             return Importers[type].ImportObject(completePath) as T;
         }
+
+        public byte[] Read(string relativePath)
+        {
+            var completePath = Path.Combine(ContentRoot, relativePath);
+
+            if (!File.Exists(completePath))
+                throw new ContentPathException(completePath, "Could not find a file at the provided path.");
+
+            return File.ReadAllBytes(completePath);
+        }
+
+        public Stream GetFileStream(string relativePath)
+            => new FileStream(relativePath, FileMode.Open);
+        
+        public async Task<T> LoadAsync<T>(string relativePath) where T : class
+            => await Task.Run(() => Load<T>(relativePath));
+
+        public async Task<byte[]> ReadAsync(string relativePath)
+            => await Task.Run(() => Read(relativePath));
 
         public void RegisterImporter<T, U>() where U : ContentImporter<T>
         {

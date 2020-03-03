@@ -7,6 +7,7 @@ using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 using Mouse = Iris.Input.Mouse;
+using Touch = Iris.Input.Touch;
 using Window = Iris.Graphics.Window;
 
 namespace Iris
@@ -16,7 +17,7 @@ namespace Iris
         private RenderContext RenderContext { get; set; }
         private Clock DeltaClock { get; }
 
-        protected ContentManager Content { get; }
+        protected IContentProvider Content { get; set; }
 
         internal RenderWindow RenderWindow { get; private set; }
 
@@ -36,9 +37,12 @@ namespace Iris
             Content = new ContentManager();
 
             Window = new Window(this);
-            Mouse.SetActiveGame(this);
 
+            new Touch(this);
+            new Mouse(this);
+            
             ResetWindow();
+
             Initialize();
             LoadContent();
         }

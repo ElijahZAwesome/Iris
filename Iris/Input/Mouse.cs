@@ -28,7 +28,9 @@ namespace Iris.Input
         public static bool IsButtonUp(int button)
             => !IsButtonDown(button);
 
-        internal static void SetActiveGame(Game game)
-            => _game = game;
+        internal Mouse(Game game)
+        {
+            _game = game;
+        }
     }
 }

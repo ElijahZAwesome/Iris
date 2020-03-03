@@ -31,6 +31,7 @@
             <e p="SpritesheetImporter.cs" t="Include" />
           </e>
           <e p="ContentManager.cs" t="Include" />
+          <e p="IContentProvider.cs" t="Include" />
         </e>
         <e p="Diagnostics" t="Include">
           <e p="FpsCounter.cs" t="Include" />
@@ -60,6 +61,7 @@
           <e p="Window.cs" t="Include" />
         </e>
         <e p="Input" t="Include">
+          <e p="Controller.cs" t="Include" />
           <e p="KeyCode.cs" t="Include" />
           <e p="KeyModifiers.cs" t="Include" />
           <e p="Keyboard.cs" t="Include" />
