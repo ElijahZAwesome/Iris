@@ -5,44 +5,8 @@
     <e p="$USER_HOME$/.Rider2019.3/system/resharper-host/local/Transient/ReSharperHost/v193/SolutionCaches/_Iris.-2112766916.00" t="ExcludeRecursive" />
     <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p="Iris" t="IncludeRecursive">
-        <e p="Content" t="Include">
-          <e p="ContentImporters" t="Include">
-            <e p="ContentImporter.cs" t="Include" />
-            <e p="PixelShaderImporter.cs" t="Include" />
-            <e p="SpriteImporter.cs" t="Include" />
-            <e p="SpritesheetImporter.cs" t="Include" />
-          </e>
-          <e p="ContentManager.cs" t="Include" />
-        </e>
-        <e p="Diagnostics" t="Include">
-          <e p="FpsCounter.cs" t="Include" />
-        </e>
-        <e p="Exceptions" t="Include">
-          <e p="ContentException.cs" t="Include" />
-          <e p="ContentPathException.cs" t="Include" />
-          <e p="ContentUnsupportedException.cs" t="Include" />
-          <e p="ShaderNotSupportedException.cs" t="Include" />
-        </e>
-        <e p="FodyWeavers.xml" t="Include" />
-        <e p="Game.cs" t="Include" />
-        <e p="Graphics" t="Include">
-          <e p="Color.cs" t="Include" />
-          <e p="GraphicsSettings.cs" t="Include" />
-          <e p="OffscreenBuffer.cs" t="Include" />
-          <e p="OpenGlVersion.cs" t="Include" />
-          <e p="PixelShader.cs" t="Include" />
-          <e p="RenderContext.cs" t="Include" />
-          <e p="Sprite.cs" t="Include" />
-          <e p="Spritesheet.cs" t="Include" />
-          <e p="WindowProperties.cs" t="Include" />
-        </e>
-        <e p="Internal" t="Include">
-          <e p="SfmlExtensions.cs" t="Include" />
-        </e>
-        <e p="Iris.csproj" t="IncludeRecursive" />
-        <e p="ModuleInitializer.cs" t="Include" />
-        <e p="Rectangle.cs" t="Include" />
-        <e p="SfmlBinaries" t="Include">
+        <e p=".editorconfig" t="Include" />
+        <e p="Binaries" t="Include">
           <e p="Win32" t="Include">
             <e p="csfml-audio-2.dll" t="Include" />
             <e p="csfml-graphics-2.dll" t="Include" />
@@ -58,12 +22,72 @@
             <e p="csfml-window-2.dll" t="Include" />
           </e>
         </e>
+        <e p="Content" t="Include">
+          <e p="ContentImporters" t="Include">
+            <e p="ContentImporter.cs" t="Include" />
+            <e p="FontImporter.cs" t="Include" />
+            <e p="PixelShaderImporter.cs" t="Include" />
+            <e p="SpriteImporter.cs" t="Include" />
+            <e p="SpritesheetImporter.cs" t="Include" />
+          </e>
+          <e p="ContentManager.cs" t="Include" />
+        </e>
+        <e p="Diagnostics" t="Include">
+          <e p="FpsCounter.cs" t="Include" />
+        </e>
+        <e p="Exceptions" t="Include">
+          <e p="ContentException.cs" t="Include" />
+          <e p="ContentPathException.cs" t="Include" />
+          <e p="ContentUnsupportedException.cs" t="Include" />
+          <e p="CoordinatesOutOfBoundsException.cs" t="Include" />
+          <e p="IrisException.cs" t="Include" />
+          <e p="ShaderNotSupportedException.cs" t="Include" />
+        </e>
+        <e p="FodyWeavers.xml" t="Include" />
+        <e p="Game.cs" t="Include" />
+        <e p="Graphics" t="Include">
+          <e p="BlendingMode.cs" t="Include" />
+          <e p="Color.cs" t="Include" />
+          <e p="Font.cs" t="Include" />
+          <e p="GraphicsSettings.cs" t="Include" />
+          <e p="OffscreenBuffer.cs" t="Include" />
+          <e p="OpenGlVersion.cs" t="Include" />
+          <e p="PixelShader.cs" t="Include" />
+          <e p="RenderContext.cs" t="Include" />
+          <e p="Sprite.cs" t="Include" />
+          <e p="Spritesheet.cs" t="Include" />
+          <e p="Texture.cs" t="Include" />
+          <e p="Window.cs" t="Include" />
+        </e>
+        <e p="Input" t="Include">
+          <e p="KeyCode.cs" t="Include" />
+          <e p="KeyModifiers.cs" t="Include" />
+          <e p="Keyboard.cs" t="Include" />
+          <e p="Mouse.cs" t="Include" />
+          <e p="MouseWheel.cs" t="Include" />
+          <e p="Touch.cs" t="Include" />
+        </e>
+        <e p="Internal" t="Include">
+          <e p="Boot" t="Include">
+            <e p="EmbeddedDllLoader.cs" t="Include" />
+            <e p="ModuleInitializer.cs" t="Include" />
+          </e>
+          <e p="LineDrawable.cs" t="Include" />
+          <e p="Math" t="Include">
+            <e p="Simplex.cs" t="Include" />
+          </e>
+          <e p="SfmlExtensions.cs" t="Include" />
+          <e p="WinApi.cs" t="Include" />
+        </e>
+        <e p="Iris.csproj" t="IncludeRecursive" />
+        <e p="Math.cs" t="Include" />
+        <e p="Rectangle.cs" t="Include" />
         <e p="Vector2.cs" t="Include" />
         <e p="Vector3.cs" t="Include" />
         <e p="Vector4.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
+          <e p="Release" t="Include">
             <e p="netstandard2.1" t="Include">
               <e p="Iris.AssemblyInfo.cs" t="Include" />
             </e>
@@ -72,6 +96,7 @@
       </e>
       <e p="Iris.TestApp" t="IncludeRecursive">
         <e p="Content" t="Include">
+          <e p="c64style.ttf" t="Include" />
           <e p="shader.glsl" t="Include" />
           <e p="terrain.png" t="Include" />
           <e p="wot2.png" t="Include" />
@@ -81,7 +106,7 @@
         <e p="Program.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
+          <e p="Release" t="Include">
             <e p="netcoreapp3.1" t="Include">
               <e p="Iris.TestApp.AssemblyInfo.cs" t="Include" />
             </e>
