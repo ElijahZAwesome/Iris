@@ -34,5 +34,8 @@ namespace Iris.Graphics
 
         public void Set(string name, float value)
             => SfmlShader.SetUniform(name, value);
+
+        public void Set(string name, Texture texture)
+            => SfmlShader.SetUniform(name, texture.SfmlTexture);
     }
 }

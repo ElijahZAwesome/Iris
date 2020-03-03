@@ -6,7 +6,6 @@ namespace Iris.Graphics
 {
     public class Sprite
     {
-        internal SfmlTexture SfmlTexture { get; set; }
         internal SfmlSprite SfmlSprite { get; set; }
 
         public Vector2 Position
@@ -33,8 +32,8 @@ namespace Iris.Graphics
             set => SfmlSprite.Rotation = value;
         }
         
-        public float Width => SfmlTexture.Size.X;
-        public float Height => SfmlTexture.Size.Y;
+        public float Width => Texture.Width;
+        public float Height => Texture.Height;
 
         public float ActualWidth => Width * Scale.X;
         public float ActualHeight => Height * Scale.Y;
@@ -51,20 +50,16 @@ namespace Iris.Graphics
         internal Sprite(string filePath)
         {
             Texture = new Texture(filePath);
-
-            SfmlTexture = new SfmlTexture(Texture.SfmlImage);
-            SfmlSprite = new SfmlSprite(SfmlTexture);
+            SfmlSprite = new SfmlSprite(Texture.SfmlTexture);
         }
 
         public Sprite(Texture texture)
         {
             Texture = texture;
-
-            SfmlTexture = new SfmlTexture(Texture.SfmlImage);
-            SfmlSprite = new SfmlSprite(SfmlTexture);
+            SfmlSprite = new SfmlSprite(Texture.SfmlTexture);
         }
 
         public void UpdateTexture()
-            => SfmlTexture?.Update(Texture.SfmlImage);
+            => Texture.SfmlTexture?.Update(Texture.SfmlImage);
     }
 }

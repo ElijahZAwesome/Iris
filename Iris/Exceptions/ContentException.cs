@@ -2,7 +2,7 @@
 
 namespace Iris.Exceptions
 {
-    public class ContentException : Exception
+    public class ContentException : IrisException
     {
         public ContentException(string message) : base(message) { }
     }
