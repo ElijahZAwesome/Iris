@@ -63,6 +63,7 @@ namespace Iris
                     continue;
 
                 RenderWindow.DispatchEvents();
+                Controller.UpdateStates();
 
                 Update(delta);
                 Draw(RenderContext);

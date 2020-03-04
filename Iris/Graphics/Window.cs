@@ -6,7 +6,7 @@ namespace Iris.Graphics
     {
         private readonly Game _game;
         
-        private string _title;
+        private string _title = "Iris Engine";
         private bool _showCursor;
         private bool _captureCursor;
         
