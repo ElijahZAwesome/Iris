@@ -80,7 +80,7 @@ namespace Iris
             => new Vector2(left.X * right, left.Y * right);
 
         public static Vector2 operator /(Vector2 left, float right)
-            => new Vector2(left.X * right, left.Y * right);
+            => new Vector2(left.X / right, left.Y / right);
 
         public static bool operator ==(Vector2 left, Vector2 right)
             => left.X.Equals(right.X) && left.Y.Equals(right.Y);
