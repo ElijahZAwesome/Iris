@@ -3,6 +3,7 @@ using Iris.Content;
 using Iris.Diagnostics;
 using Iris.Graphics;
 using Iris.Input;
+using Iris.Internal;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -36,13 +37,12 @@ namespace Iris
             FpsCounter = new FpsCounter();
             Content = new FileSystemContentProvider();
 
-            Window = new Window(this);
-
             new Touch(this);
             new Mouse(this);
             
+            Window = new Window(this);
             ResetWindow();
-
+            
             Initialize();
             LoadContent();
         }
@@ -96,7 +96,7 @@ namespace Iris
                 RenderWindow.Close();
                 RenderWindow.Dispose();
             }
-
+            
             InitializeRenderingSystem();
         }
 
@@ -174,6 +174,12 @@ namespace Iris
 
             RenderWindow.SetActive(true);
 
+            Window.Icon = new Graphics.Texture(
+                EmbeddedResources.GetResourceStream(
+                    EmbeddedResources.IconResourceString
+                )
+            );
+            
             ConnectWindowEvents();
             RenderContext = new RenderContext(RenderWindow);
         }

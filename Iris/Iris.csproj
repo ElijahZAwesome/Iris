@@ -29,6 +29,8 @@
     <EmbeddedResource Include="Binaries\Win64\csfml-network-2.dll" />
     <EmbeddedResource Include="Binaries\Win64\csfml-system-2.dll" />
     <EmbeddedResource Include="Binaries\Win64\csfml-window-2.dll" />
+    <None Remove="Resources\Logo.png" />
+    <EmbeddedResource Include="Resources\Logo.png" />
   </ItemGroup>
 
   <ItemGroup>

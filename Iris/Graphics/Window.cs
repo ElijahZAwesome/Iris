@@ -7,6 +7,8 @@ namespace Iris.Graphics
         private readonly Game _game;
         
         private string _title = "Iris Engine";
+        private Texture _icon = new Texture(1, 1);
+        
         private bool _showCursor;
         private bool _captureCursor;
         
@@ -17,6 +19,22 @@ namespace Iris.Graphics
             {
                 _title = value;
                 _game?.RenderWindow?.SetTitle(_title);
+            }
+        }
+
+        public Texture Icon
+        {
+            get => _icon;
+            set
+            {
+                if (_icon != null)
+                {
+                    _icon.SfmlImage?.Dispose();
+                    _icon.SfmlTexture?.Dispose();
+                }
+                
+                _icon = value;
+                _game?.RenderWindow.SetIcon(_icon.Width, _icon.Height, _icon.PixelData);
             }
         }
 
