@@ -64,7 +64,7 @@ namespace Iris.Graphics
         public static readonly Color Bisque = new Color(255, 228, 196);
         public static readonly Color Black = new Color(0, 0, 0);
         public static readonly Color BlanchedAlmond = new Color(255, 235, 205);
-        public static readonly Color Blue = new Color(0, 255, 0);
+        public static readonly Color Blue = new Color(0, 0, 255);
         public static readonly Color BlueViolet = new Color(138, 43, 226);
         public static readonly Color Brown = new Color(165, 42, 42);
         public static readonly Color BurlyWood = new Color(222, 184, 135);
@@ -188,7 +188,7 @@ namespace Iris.Graphics
         public static readonly Color Teal = new Color(0, 128, 128);
         public static readonly Color Thistle = new Color(216, 191, 216);
         public static readonly Color Tomato = new Color(255, 99, 71);
-        public static readonly Color Transparent = new Color(0, 0, 0, 255);
+        public static readonly Color Transparent = new Color(0, 0, 0, 0);
         public static readonly Color Turquoise = new Color(64, 224, 208);
         public static readonly Color Violet = new Color(238, 130, 238);
         public static readonly Color White = new Color(255, 255, 255);
