@@ -12,7 +12,7 @@
     <Authors>Ciastex</Authors>
     <Description>Simple, cross-platform 2D game framework for .NET Core without bullshit.</Description>
     <Copyright>Copyright 20XX © Tomasz Cichoń</Copyright>
-    <Version>0.3.0-alpha</Version>
+    <Version>0.4.0-alpha</Version>
     
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>2D, SFML, Game Engine, Engine, Framework, Game Framework</PackageTags>
