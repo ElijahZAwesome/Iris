@@ -27,7 +27,7 @@ namespace Iris.Graphics
             MeasureContainer = new SfmlText();
         }
 
-        public Vector2 Measure(string text)
+        public Rectangle Measure(string text)
         {
             MeasureContainer.Font = SfmlFont;
             MeasureContainer.DisplayedString = text;
@@ -49,10 +49,8 @@ namespace Iris.Graphics
             if (Strikethrough)
                 MeasureContainer.Style |= SfmlText.Styles.StrikeThrough;
 
-            var rect = MeasureContainer.GetLocalBounds()
-                                       .ToIrisRectangle();
-
-            return new Vector2(rect.Width, rect.Height);
+            return MeasureContainer.GetLocalBounds()
+                                   .ToIrisRectangle();
         }
 
         internal SfmlText ConstructText(string text)
