@@ -1,5 +1,4 @@
 ﻿using Iris.Internal;
-using SfmlTexture = SFML.Graphics.Texture;
 using SfmlSprite = SFML.Graphics.Sprite;
 
 namespace Iris.Graphics
