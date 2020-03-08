@@ -22,8 +22,6 @@ namespace Iris.Graphics
         public bool Underline { get; set; }
         public bool Strikethrough { get; set; }
 
-        public float LineHeight => CharacterSize + LineSpacing;
-
         ~Font()
         {
             Dispose(false);
