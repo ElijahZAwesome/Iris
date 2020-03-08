@@ -55,5 +55,11 @@ namespace Iris
 
         internal IntRect ToSfmlIntRect()
             => new IntRect((int)Left, (int)Top, (int)Width, (int)Height);
+
+        public static implicit operator Rectangle(IntRect intRect)
+            => new Rectangle(intRect.Left, intRect.Top, intRect.Width, intRect.Height);
+
+        public static implicit operator Rectangle(FloatRect floatRect)
+            => new Rectangle(floatRect.Left, floatRect.Top, floatRect.Width, floatRect.Height);
     }
 }
