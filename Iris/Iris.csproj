@@ -12,11 +12,15 @@
     <Authors>Ciastex</Authors>
     <Description>Simple, cross-platform 2D game framework for .NET Core without bullshit.</Description>
     <Copyright>Copyright 20XX © Tomasz Cichoń</Copyright>
-    <Version>0.4.0-alpha</Version>
+    <Version>0.5.0-alpha</Version>
     
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>2D, SFML, Game Engine, Engine, Framework, Game Framework</PackageTags>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Graphics\Glyph.cs" />
+  </ItemGroup>
   
   <ItemGroup>
     <EmbeddedResource Include="Binaries\Win32\csfml-audio-2.dll" />
@@ -29,7 +33,6 @@
     <EmbeddedResource Include="Binaries\Win64\csfml-network-2.dll" />
     <EmbeddedResource Include="Binaries\Win64\csfml-system-2.dll" />
     <EmbeddedResource Include="Binaries\Win64\csfml-window-2.dll" />
-    <None Remove="Resources\Logo.png" />
     <EmbeddedResource Include="Resources\Logo.png" />
   </ItemGroup>
 
