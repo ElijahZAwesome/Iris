@@ -1,11 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Iris.Exceptions;
 using SfmlImage = SFML.Graphics.Image;
 using SfmlTexture = SFML.Graphics.Texture;
 
 namespace Iris.Graphics
 {
-    public class Texture
+    public class Texture : IDisposable
     {
         internal SfmlImage SfmlImage { get; set; }
         internal SfmlTexture SfmlTexture { get; set; }
@@ -13,6 +14,13 @@ namespace Iris.Graphics
         public uint Width => SfmlImage.Size.X;
         public uint Height => SfmlImage.Size.Y;
         public byte[] PixelData => SfmlImage.Pixels;
+
+        public bool Disposed { get; private set; }
+
+        ~Texture()
+        {
+            Dispose(false);
+        }
 
         public Texture(uint width, uint height)
         {
@@ -35,17 +43,37 @@ namespace Iris.Graphics
             SfmlImage = new SfmlImage(stream);
         }
 
+        internal Texture(SfmlTexture sfmlTexture)
+        {
+            SfmlImage = sfmlTexture.CopyToImage();
+            SfmlTexture = new SfmlTexture(SfmlImage);
+        }
+
         public void SaveToFile(string filePath)
-            => SfmlImage.SaveToFile(filePath);
+        {
+            EnsureNotDisposed();
+
+            SfmlImage.SaveToFile(filePath);
+        }
 
         public void FlipHorizontal()
-            => SfmlImage.FlipHorizontally();
+        {
+            EnsureNotDisposed();
+
+            SfmlImage.FlipHorizontally();
+        }
 
         public void FlipVertical()
-            => SfmlImage.FlipVertically();
+        {
+            EnsureNotDisposed();
+
+            SfmlImage.FlipVertically();
+        }
 
         public Color GetPixel(uint x, uint y)
         {
+            EnsureNotDisposed();
+
             if (x >= Width || y >= Height)
                 throw new CoordinatesOutOfBoundsException(x, y, Width, Height,
                     "Tried to retrieve a pixel outside the texture area.");
@@ -55,10 +83,12 @@ namespace Iris.Graphics
 
         public Color GetPixel(Vector2 position)
         {
-            if((uint)position.X >= Width || (uint)position.Y >= Height)
+            EnsureNotDisposed();
+
+            if ((uint)position.X >= Width || (uint)position.Y >= Height)
                 throw new CoordinatesOutOfBoundsException((uint)position.X, (uint)position.Y, Width, Height,
                     "Tried to retrieve a pixel outside the texture area.");
-                
+
             return SfmlImage.GetPixel(
                 (uint)position.X,
                 (uint)position.Y
@@ -67,6 +97,8 @@ namespace Iris.Graphics
 
         public void SetPixel(uint x, uint y, Color color)
         {
+            EnsureNotDisposed();
+
             if (x >= Width || y >= Height)
                 throw new CoordinatesOutOfBoundsException(x, y, Width, Height,
                     "Tried to set a pixel outside the texture area.");
@@ -76,6 +108,8 @@ namespace Iris.Graphics
 
         public void SetPixel(Vector2 position, Color color)
         {
+            EnsureNotDisposed();
+
             if ((uint)position.X >= Width || (uint)position.Y >= Height)
                 throw new CoordinatesOutOfBoundsException((uint)position.X, (uint)position.Y, Width, Height,
                     "Tried to set a pixel outside the texture area.");
@@ -84,6 +118,37 @@ namespace Iris.Graphics
         }
 
         public void Update()
-            => SfmlTexture.Update(SfmlImage);
+        {
+            EnsureNotDisposed();
+            SfmlTexture.Update(SfmlImage);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!Disposed)
+            {
+                if (disposing)
+                {
+                    // No managed resources to dispose of.
+                }
+
+                SfmlTexture.Dispose();
+                SfmlImage.Dispose();
+
+                Disposed = true;
+            }
+        }
+
+        private void EnsureNotDisposed()
+        {
+            if (Disposed)
+                throw new InvalidOperationException("The texture has already been disposed of.");
+        }
     }
 }
