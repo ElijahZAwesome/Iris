@@ -27,6 +27,22 @@ namespace Iris.Graphics
             MeasureContainer = new SfmlText();
         }
 
+        public Font(Font font)
+        {
+            SfmlFont = new SfmlFont(font.SfmlFont);
+            MeasureContainer = new SfmlText();
+
+            CharacterSize = font.CharacterSize;
+            CharacterSpacing = font.CharacterSpacing;
+            LineSpacing = font.LineSpacing;
+            OutlineThickness = font.OutlineThickness;
+
+            Bold = font.Bold;
+            Italic = font.Italic;
+            Underline = font.Underline;
+            Strikethrough = font.Strikethrough;
+        }
+
         public Rectangle Measure(string text)
         {
             MeasureContainer.Font = SfmlFont;
