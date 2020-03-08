@@ -80,7 +80,7 @@ namespace Iris.Content
         }
 
         public Stream GetFileStream(string relativePath)
-            => new FileStream(relativePath, FileMode.Open);
+            => new FileStream(Path.Combine(ContentRoot, relativePath), FileMode.Open);
         
         public async Task<T> LoadAsync<T>(string relativePath) where T : class
             => await Task.Run(() => Load<T>(relativePath));
