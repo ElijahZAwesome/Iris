@@ -1,11 +1,14 @@
 ﻿using Iris.Internal;
+using System;
 using SfmlFont = SFML.Graphics.Font;
 using SfmlText = SFML.Graphics.Text;
 
 namespace Iris.Graphics
 {
-    public class Font
+    public class Font : IDisposable
     {
+        private bool _disposed;
+
         internal SfmlFont SfmlFont { get; }
         internal SfmlText MeasureContainer { get; }
 
@@ -21,6 +24,11 @@ namespace Iris.Graphics
 
         public float LineHeight => CharacterSize + LineSpacing;
 
+        ~Font()
+        {
+            Dispose(false);
+        }
+
         public Font(string filePath)
         {
             SfmlFont = new SfmlFont(filePath);
@@ -29,6 +37,8 @@ namespace Iris.Graphics
 
         public Font(Font font)
         {
+            font.EnsureNotDisposed();
+
             SfmlFont = new SfmlFont(font.SfmlFont);
             MeasureContainer = new SfmlText();
 
@@ -45,6 +55,8 @@ namespace Iris.Graphics
 
         public Rectangle Measure(string text)
         {
+            EnsureNotDisposed();
+
             MeasureContainer.Font = SfmlFont;
             MeasureContainer.DisplayedString = text;
             MeasureContainer.CharacterSize = CharacterSize;
@@ -69,6 +81,28 @@ namespace Iris.Graphics
                                    .ToIrisRectangle();
         }
 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // No managed objects to dispose.
+                }
+
+                MeasureContainer.Dispose();
+                SfmlFont.Dispose();
+
+                _disposed = true;
+            }
+        }
+
         internal SfmlText ConstructText(string text)
         {
             var txt = new SfmlText(text, SfmlFont, CharacterSize)
@@ -91,6 +125,12 @@ namespace Iris.Graphics
                 txt.Style |= SfmlText.Styles.StrikeThrough;
 
             return txt;
+        }
+
+        private void EnsureNotDisposed()
+        {
+            if (_disposed)
+                throw new InvalidOperationException("This font has already been disposed of.");
         }
     }
 }
