@@ -36,21 +36,21 @@ namespace Iris.Graphics
             Target.Draw(rectShape, RenderStates);
         }
 
-        public void DrawRectangle(float x, float y, float width, float height, Color color, float thickness = 1f)
-            => DrawRectangle(
-                new Vector2(x, y),
-                new Vector2(width, height),
-                new Vector2(0, 0),
-                new Vector2(1, 1),
-                color,
-                0, 
-                thickness
-            );
-
         public void DrawRectangle(Vector2 position, Vector2 size, Color color, float thickness = 1f)
             => DrawRectangle(
                 position,
                 size,
+                new Vector2(0, 0),
+                new Vector2(1, 1),
+                color,
+                0,
+                thickness
+            );
+
+        public void DrawRectangle(Rectangle rectangle, Color color, float thickness = 1f)
+            => DrawRectangle(
+                rectangle.Position,
+                rectangle.Size,
                 new Vector2(0, 0),
                 new Vector2(1, 1),
                 color,
@@ -75,20 +75,20 @@ namespace Iris.Graphics
             Target.Draw(rectShape, RenderStates);
         }
 
-        public void FillRectangle(float x, float y, float width, float height, Color color)
+        public void FillRectangle(Vector2 position, Vector2 size, Color color)
             => FillRectangle(
-                new Vector2(x, y),
-                new Vector2(width, height),
+                position,
+                size,
                 new Vector2(0, 0),
                 new Vector2(1, 1),
                 color,
                 0
             );
 
-        public void FillRectangle(Vector2 position, Vector2 size, Color color)
+        public void FillRectangle(Rectangle rectangle, Color color)
             => FillRectangle(
-                position,
-                size,
+                rectangle.Position,
+                rectangle.Size,
                 new Vector2(0, 0),
                 new Vector2(1, 1),
                 color,
@@ -104,26 +104,27 @@ namespace Iris.Graphics
         public void Draw(OffscreenBuffer buffer)
             => Target.Draw(buffer.Sprite, RenderStates);
 
-        public void Draw(Spritesheet spritesheet, int cellIndex, Vector2 position, Vector2 scale, Color color)
+        public void Draw(Spritesheet spritesheet, int cellIndex, Vector2 position, Vector2 origin, Vector2 scale, Color color)
         {
-            spritesheet.Configure(cellIndex, position, scale, color);
+            spritesheet.Configure(cellIndex, position, origin, scale, color);
             Draw(spritesheet.Sprite);
         }
 
-        public void DrawString(Font font, string str, Vector2 position, float rotation, Color color)
+        public void DrawString(Font font, string str, Vector2 position, Vector2 origin, float rotation, Color color)
         {
             var text = font.ConstructText(str);
 
-            text.FillColor = color;
             text.Position = position;
+            text.Origin = origin;
             text.Rotation = rotation;
+            text.FillColor = color;
 
             Target.Draw(text, RenderStates);
             text.Dispose();
         }
 
         public void DrawString(Font font, string str, Vector2 position, Color color)
-            => DrawString(font, str, position, 0.0f, color);
+            => DrawString(font, str, position, new Vector2(0, 0), 0, color);
 
         public void DrawLine(Vector2 a, Vector2 b, float lineThickness, Color color)
         {
