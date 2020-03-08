@@ -1,4 +1,3 @@
-using System;
 using Iris.Content;
 using Iris.Diagnostics;
 using Iris.Graphics;
@@ -7,6 +6,7 @@ using Iris.Internal;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
+using System;
 using Mouse = Iris.Input.Mouse;
 using Touch = Iris.Input.Touch;
 using Window = Iris.Graphics.Window;
@@ -16,7 +16,9 @@ namespace Iris
     public class Game : IDisposable
     {
         private RenderContext RenderContext { get; set; }
+
         private Clock DeltaClock { get; }
+        private float LastDeltaTime { get; set; }
 
         protected IContentProvider Content { get; set; }
 
@@ -28,6 +30,11 @@ namespace Iris
 
         public bool Running { get; set; }
         public bool Disposed { get; private set; }
+
+        ~Game()
+        {
+            Dispose(false);
+        }
 
         protected Game()
         {
@@ -56,23 +63,12 @@ namespace Iris
 
             Running = true;
 
-            var delta = 0f;
             while (Running)
             {
                 if (RenderWindow == null)
                     continue;
 
-                RenderWindow.DispatchEvents();
-                Controller.UpdateStates();
-
-                Update(delta);
-                Draw(RenderContext);
-
-                RenderWindow.Display();
-                FpsCounter.Update();
-
-                delta = DeltaClock.ElapsedTime.AsSeconds();
-                DeltaClock.Restart();
+                Tick();
             }
 
             RenderWindow?.Close();
@@ -81,10 +77,8 @@ namespace Iris
 
         public void Dispose()
         {
-            DisconnectWindowEvents();
-            RenderWindow.Dispose();
-            
-            Disposed = true;
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         internal void ResetWindow()
@@ -158,6 +152,37 @@ namespace Iris
         
         protected virtual void Exiting()
         {
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!Disposed)
+            {
+                if (disposing)
+                {
+                    DisconnectWindowEvents();
+                }
+
+                RenderWindow.Dispose();
+                DeltaClock.Dispose();
+
+                Disposed = true;
+            }
+        }
+
+        private void Tick()
+        {
+            RenderWindow.DispatchEvents();
+            Controller.UpdateStates();
+
+            Update(LastDeltaTime);
+            Draw(RenderContext);
+
+            RenderWindow.Display();
+            FpsCounter.Update();
+
+            LastDeltaTime = DeltaClock.ElapsedTime.AsSeconds();
+            DeltaClock.Restart();
         }
 
         private void InitializeRenderingSystem()
