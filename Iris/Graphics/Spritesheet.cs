@@ -48,12 +48,13 @@ namespace Iris.Graphics
                 Cells[cellIndex].Top / _cellHeight
             );
 
-        internal void Configure(int cellIndex, Vector2 position, Vector2 scale, Color color)
+        internal void Configure(int cellIndex, Vector2 position, Vector2 scale, Vector2 origin, Color color)
         {
             Sprite.SourceRectangle = Cells[cellIndex];
             Sprite.Position = position;
-            Sprite.Color = color;
             Sprite.Scale = scale;
+            Sprite.Origin = origin;
+            Sprite.Color = color;
         }
 
         private void GenerateSourceRectangles()
