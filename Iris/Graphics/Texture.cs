@@ -31,6 +31,7 @@ namespace Iris.Graphics
         public Texture(string filePath)
         {
             SfmlImage = new SfmlImage(filePath);
+            SfmlTexture = new SfmlTexture(SfmlImage); // Not in there for some reason?
         }
 
         public Texture(byte[] data)
@@ -138,7 +139,7 @@ namespace Iris.Graphics
                     // No managed resources to dispose of.
                 }
 
-                SfmlTexture.Dispose();
+                if(SfmlTexture != null) SfmlTexture.Dispose();
                 SfmlImage.Dispose();
 
                 Disposed = true;
